@@ -37,7 +37,6 @@ class _NewPurchasePageState extends State<NewPurchasePage> {
           future: fetchNewPurchases(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              print('received Data');
               List<dynamic> incidents = (snapshot.data as List);
               print(incidents.length);
               bool hasData = incidents.length > 0;
