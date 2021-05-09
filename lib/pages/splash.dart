@@ -13,12 +13,12 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-
-
   Future<void> checkLoggedIn() async{
     var userId = await getUserId();
     if(userId == null){
       navigateToPageRemoveHistory(context, SignInPage());
+      // navigateToPageRemoveHistory(context, DashboardPage());
+
       return;
     }else{
       navigateToPageRemoveHistory(context, DashboardPage());
