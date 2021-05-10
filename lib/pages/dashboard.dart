@@ -7,6 +7,7 @@ import 'package:gas_delivery/models/ongoing_order.dart';
 import 'package:gas_delivery/models/select_options.dart';
 import 'package:gas_delivery/pages/empty_screen.dart';
 import 'package:gas_delivery/pages/new_purchase.dart';
+import 'package:gas_delivery/ui/signin.dart';
 import 'package:gas_delivery/utils/constants.dart';
 import 'package:gas_delivery/utils/custom_methods.dart';
 import 'package:gas_delivery/utils/shared_pref.dart';
@@ -28,20 +29,41 @@ class _DashboardPageState extends State<DashboardPage> {
       if (response.statusCode != 200) {
         throw new Exception('Error fetching your orders');
       }
-      print(response.body);
       Map<String, dynamic> map = json.decode(response.body);
       return map;
     }
 
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(APP_NAME),
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (value)async{
+              switch (value) {
+                case 'Logout':
+                  await clearAllPreferences();
+                  navigateToPageRemoveHistory(context, SignInPage());
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return {'Logout'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 30),
-        child: Container(
-          color: Colors.grey[200],
-          margin: EdgeInsets.only(top: 10),
+      body: Container(
+
+        height: size.height,
+        color: Colors.grey[200],
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: 30),
           child: Column(
             children: [
               ListView(
