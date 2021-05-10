@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gas_delivery">
    <application
-        android:label="gas_delivery"
+        android:label="Gas Delivery"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
