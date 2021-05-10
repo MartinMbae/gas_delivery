@@ -19,15 +19,15 @@ class NewPurchasePage extends StatefulWidget {
 
 class _NewPurchasePageState extends State<NewPurchasePage> {
 
-  Future<List<dynamic>> fetchNewPurchases() async {
+
+  Future<Map<String, dynamic>> fetchNewPurchases() async {
     var url = "$BASE_URL${widget.url}";
     var response = await http.get( Uri.parse(url)).timeout(Duration(seconds: 30));
     if (response.statusCode != 200) {
       throw new Exception('Error fetching available new Purchases');
     }
     Map<String, dynamic> map = json.decode(response.body);
-    List<dynamic> incidents = map['gasses'];
-    return incidents;
+    return map;
   }
 
   @override
@@ -42,18 +42,26 @@ class _NewPurchasePageState extends State<NewPurchasePage> {
           future: fetchNewPurchases(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<dynamic> incidents = (snapshot.data as List);
+
+
+              Map<String, dynamic> mapp = (snapshot.data as Map<String, dynamic>);
+              var success = mapp['success'];
+              if (!success){
+                return EmptyPage(icon: Icons.error, message: "No orders found",height: 200.0,);
+              }
+              List<dynamic> incidents = mapp['gasses'];
               bool hasData = incidents.length > 0;
               return ListView.builder(
                   itemCount: incidents.length,
                   itemBuilder: (context, index) {
                     return hasData
                         ? GasItemHolder(
-                          gasItem: GasItem.fromJson(incidents[index]),
-                        )
+                      gasItem: GasItem.fromJson(incidents[index]),
+                    )
                         : EmptyPage(
                         icon: Icons.error, message: "No items found");
                   });
+
             } else if(snapshot.hasError){
               return Text(snapshot.error.toString());
             }else {
