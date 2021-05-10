@@ -231,7 +231,6 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           GestureDetector(
             onTap: () {
-              print("Routing");
             },
             child: Text(
               "Recover",
@@ -292,7 +291,6 @@ class _SignInScreenState extends State<SignInScreen> {
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamed(SIGN_UP);
-              print("Routing to Sign up screen");
             },
             child: Text(
               "Sign up",

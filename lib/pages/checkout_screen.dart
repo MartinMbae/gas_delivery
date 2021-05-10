@@ -111,7 +111,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OutlinedButton.icon(onPressed: (){
-                      navigateToPage(context, AddressPage());
+                      navigateToPage(context, AddressPage(
+                        gasItem: widget.gasItem,
+                        count: count,
+                      ));
                     }, icon: Icon(Icons.check), label: Text("Order Now")),
                   ],
                 ),

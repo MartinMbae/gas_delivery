@@ -136,7 +136,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           child: GestureDetector(
               onTap: () {
-                print('Adding photo');
               },
               child: Icon(
                 Icons.add_a_photo,
@@ -375,7 +374,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           GestureDetector(
             onTap: () {
               Navigator.of(context).pop(SIGN_IN);
-              print("Routing to Sign up screen");
             },
             child: Text(
               "Sign in",

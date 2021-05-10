@@ -52,7 +52,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     return Text("Inflate ongoing Orders");
                   }
                 }else{
-                  return Center(
+                  return Padding(
+                    padding: EdgeInsets.only(top: 40),
                     child: CircularProgressIndicator(),
                   );
                 }
@@ -88,10 +89,16 @@ class _DashboardPageState extends State<DashboardPage> {
                           onPressed: () async{
                             switch (selectOption.select_options_items){
                               case SELECT_OPTIONS_ITEMS.REFILL:
-                                navigateToPage(context, NewPurchasePage());
+                                navigateToPage(context, NewPurchasePage(
+                                  url: "api/gas",
+                                  title: "Refilling",
+                                ));
                                 break;
                               case SELECT_OPTIONS_ITEMS.NEW_PURCHASE:
-                               navigateToPage(context, NewPurchasePage());
+                               navigateToPage(context, NewPurchasePage(
+                                 url: "api/gas/0",
+                                 title: "New Purchase",
+                               ));
                                 break;
                             }
                           }, child: Text(selectOption.buttonText, style: Theme.of(context).textTheme.caption!.apply(color: Colors.white),)),

@@ -6,14 +6,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gas_delivery/holder/simple_row.dart';
+import 'package:gas_delivery/models/GasItem.dart';
 import 'package:gas_delivery/models/address.dart';
+import 'package:gas_delivery/pages/confirm_order_page.dart';
 import 'package:gas_delivery/utils/colors.dart';
+import 'package:gas_delivery/utils/custom_methods.dart';
 
 class AddressItemHolder extends StatefulWidget {
   final UserAddress userAddress;
+  final GasItem gasItem;
+  final int count;
 
   const AddressItemHolder(
-      {Key? key, required this.userAddress})
+      {Key? key,
+        required this.userAddress,
+        required this.gasItem,
+        required this.count,
+      })
       : super(key: key);
 
   @override
@@ -48,6 +57,7 @@ class _AddressItemHolderState extends State<AddressItemHolder> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         SimpleRow(title: "Address", subtitle: widget.userAddress.address),
                         SimpleRow(title: "House Number", subtitle: widget.userAddress.house_number),
                         SimpleRow(title: "Apartment Number / Estate", subtitle: widget.userAddress.apartment_estate),
@@ -76,6 +86,8 @@ class _AddressItemHolderState extends State<AddressItemHolder> {
                 ),
               ),
               onTap: (){
+
+                navigateToPage(context, ConfirmOrderPage(gasItem: widget.gasItem, count: widget.count, userAddress: widget.userAddress));
               },
             )
 

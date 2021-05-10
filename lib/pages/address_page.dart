@@ -4,16 +4,21 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:gas_delivery/holder/address_holders.dart';
+import 'package:gas_delivery/models/GasItem.dart';
 import 'package:gas_delivery/models/address.dart';
 import 'package:gas_delivery/pages/new_address_page.dart';
 import 'package:gas_delivery/utils/constants.dart';
-import 'package:gas_delivery/utils/custom_methods.dart';
 import 'package:gas_delivery/utils/shared_pref.dart';
 import 'package:http/http.dart' as http;
-
 import 'empty_screen.dart';
 
 class AddressPage extends StatefulWidget {
+
+  final GasItem gasItem;
+  final int count;
+
+  const AddressPage({Key? key, required this.gasItem, required this.count}) : super(key: key);
+
   @override
   _AddressPageState createState() => _AddressPageState();
 }
@@ -21,11 +26,7 @@ class AddressPage extends StatefulWidget {
 class _AddressPageState extends State<AddressPage>{
 
   Future<Map<String, dynamic>> fetchMyAddresses() async {
-
-    print('fetching my addresse');
-
     var userId = await getUserId();
-
     var url = "${BASE_URL}api/get_addresses/$userId";
     var response = await http.get( Uri.parse(url)).timeout(Duration(seconds: 30));
     if (response.statusCode != 200) {
@@ -90,6 +91,8 @@ class _AddressPageState extends State<AddressPage>{
                           return hasData
                               ? AddressItemHolder(
                             userAddress: UserAddress.fromJson(incidents[index]),
+                            count: widget.count,
+                            gasItem: widget.gasItem,
                           )
                               : EmptyPage(icon: Icons.error, message: "No address found");
                         });

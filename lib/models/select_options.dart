@@ -29,6 +29,6 @@ final selectOptionsList = [
       title: 'Refilling',
       description: 'Customer wishing to refill their gas cylinders',
       image_icon: 'assets/gas_refill.jpg',
-      select_options_items: SELECT_OPTIONS_ITEMS.NEW_PURCHASE,
+      select_options_items: SELECT_OPTIONS_ITEMS.REFILL,
       buttonText: 'Refill Now'),
 ];
