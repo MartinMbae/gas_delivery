@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class OngoingOrder {
-  final id,address,house_number,apartment_estate,landmark,total_price,classification,weight, initialPrice,price,company_name, created_on ;
+  final id,address,house_number,apartment_estate,landmark,total_price,classification,weight, initialPrice,price,company_name, created_at_parsed ;
   OngoingOrder({
     @required this.id,
     @required this.address,
@@ -14,7 +14,7 @@ class OngoingOrder {
     @required this.initialPrice,
     @required this.price,
     @required this.company_name,
-    @required this.created_on,
+    @required this.created_at_parsed,
   });
 
   static OngoingOrder fromJson(dynamic json) {
@@ -30,7 +30,7 @@ class OngoingOrder {
       initialPrice: json['initialPrice'],
       price: json['price'],
       company_name: json['company_name'],
-      created_on: json['created_on'],
+      created_at_parsed: json['created_at_parsed'],
     );
   }
 }

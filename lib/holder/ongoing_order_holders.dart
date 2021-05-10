@@ -122,7 +122,7 @@ class _OngoingOrderHolderState extends State<OngoingOrderHolder> {
               text: TextSpan(
                 children: <TextSpan>[
                   TextSpan(text: "Order Placed at : ", style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8)),
-                  TextSpan(text: "${widget.ongoingOrder.created_on}", style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8, color: primaryColor)),
+                  TextSpan(text: "${widget.ongoingOrder.created_at_parsed}", style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8, color: primaryColor)),
                 ],
               ),
             ),

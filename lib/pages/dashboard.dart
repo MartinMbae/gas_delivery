@@ -28,13 +28,14 @@ class _DashboardPageState extends State<DashboardPage> {
       if (response.statusCode != 200) {
         throw new Exception('Error fetching your orders');
       }
+      print(response.body);
       Map<String, dynamic> map = json.decode(response.body);
       return map;
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Gas"),
+        title: Text(APP_NAME),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(bottom: 30),
@@ -49,6 +50,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 physics: NeverScrollableScrollPhysics(),
                 children: selectOptionsList.map(buildOptionSelectionList).toList(),
               ),
+              SizedBox(height: 12,),
               Text("Ongoing Orders", style: Theme.of(context).textTheme.headline5!.apply(fontSizeFactor: 0.8, decoration: TextDecoration.underline),),
               FutureBuilder(
                 builder: (context, snapshot){
