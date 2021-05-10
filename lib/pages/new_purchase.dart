@@ -13,8 +13,6 @@ class NewPurchasePage extends StatefulWidget {
   final String url;
 
   const NewPurchasePage({Key? key, required this.title, required this.url}) : super(key: key);
-
-
   @override
   _NewPurchasePageState createState() => _NewPurchasePageState();
 }
