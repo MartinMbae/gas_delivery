@@ -141,14 +141,14 @@ class _ProfileFragmentState extends State<ProfileFragment> {
     );
   }
 
-
   Future<void> updateProfile(
       String name,
       String email,
       String phone,
       ) async {
     _progressDialog.show();
-    String url = BASE_URL + 'api/update_user';
+    var user_id = await getUserId();
+    String url = BASE_URL + 'api/update_user/$user_id';
     dynamic response;
     try {
       response = await http.post(Uri.parse(url), body: {
@@ -172,7 +172,7 @@ class _ProfileFragmentState extends State<ProfileFragment> {
           messageText:
           "Page took so long to load. Check your internet access and try again.");
       return null;
-    }else if(response.statusCode != 500){
+    }else if(response.statusCode == 500){
       DangerAlertBox(
           context: context,
           title: "Error",

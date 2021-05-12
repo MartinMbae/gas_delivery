@@ -311,7 +311,9 @@ class _SignInScreenState extends State<SignInScreen> {
     String email,
     String password,
   ) async {
-    _progressDialog.show();
+    try{
+      _progressDialog.show();
+    }catch(Excep){}
     String url = BASE_URL + 'api/login';
     dynamic response;
     try {
@@ -326,7 +328,9 @@ class _SignInScreenState extends State<SignInScreen> {
           messageText: e.toString());
       return null;
     }
-    _progressDialog.dismiss();
+    try{
+      _progressDialog.dismiss();
+    }catch(Excep){}
 
     if (response == null) {
       DangerAlertBox(
