@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
 import 'package:gas_delivery/models/GasItem.dart';
 import 'package:gas_delivery/models/address.dart';
-import 'package:gas_delivery/pages/dashboard.dart';
+import 'package:gas_delivery/fragments/dashboard.dart';
 import 'package:gas_delivery/utils/colors.dart';
 import 'package:gas_delivery/utils/constants.dart';
 import 'package:gas_delivery/utils/custom_methods.dart';
@@ -65,7 +65,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Image.asset("assets/logo.png", width: 60, height: 60,),
+                              Image.asset("assets/logo.jpg", width: 60, height: 60,),
                               Text(widget.gasItem.company_name, style: Theme.of(context).textTheme.caption, overflow: TextOverflow.ellipsis, maxLines: 1,),
                             ],
                           ),
@@ -163,6 +163,26 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                       ),
                     ),
                     SizedBox(height: 20,),
+
+                    Divider(height: 2,),
+                    Padding(
+                      padding:  EdgeInsets.symmetric(vertical: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Business Details", style: Theme.of(context).textTheme.subtitle1!.apply(color: Colors.black, decoration: TextDecoration.underline)),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(text: "Mpesa Till Number : ", style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8)),
+                          TextSpan(text: "789087", style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8, color: primaryColor)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20,),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -245,7 +265,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
       navigateToPageRemoveHistory(context, DashboardPage());
       SuccessAlertBox(
           context: context,
-          title: "Error",
+          title: "Success",
           messageText: responseAsJson['message']);
     } else {
       DangerAlertBox(

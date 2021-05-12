@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gas_delivery/pages/dashboard.dart';
+import 'package:gas_delivery/fragments/dashboard.dart';
+import 'package:gas_delivery/pages/homepage.dart';
 import 'package:gas_delivery/ui/signin.dart';
 import 'package:gas_delivery/utils/custom_methods.dart';
 import 'package:gas_delivery/utils/shared_pref.dart';
@@ -9,8 +10,6 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-
-
 class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> checkLoggedIn() async{
@@ -18,10 +17,9 @@ class _SplashScreenState extends State<SplashScreen> {
     if(userId == null){
       navigateToPageRemoveHistory(context, SignInPage());
       // navigateToPageRemoveHistory(context, DashboardPage());
-
       return;
     }else{
-      navigateToPageRemoveHistory(context, DashboardPage());
+      navigateToPageRemoveHistory(context, HomePage());
       return;
     }
   }

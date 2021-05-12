@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gas_delivery/pages/dashboard.dart';
+import 'package:gas_delivery/fragments/dashboard.dart';
+import 'package:gas_delivery/pages/homepage.dart';
 import 'package:gas_delivery/ui/widgets/custom_shape.dart';
 import 'package:gas_delivery/ui/widgets/customappbar.dart';
 import 'package:gas_delivery/ui/widgets/responsive_ui.dart';
@@ -120,47 +121,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
         ),
-        Container(
-          height: _height / 5.5,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  spreadRadius: 0.0,
-                  color: Colors.black26,
-                  offset: Offset(1.0, 10.0),
-                  blurRadius: 20.0),
-            ],
-            color: Colors.white,
-            shape: BoxShape.circle,
-          ),
-          child: GestureDetector(
-              onTap: () {
-              },
-              child: Icon(
-                Icons.add_a_photo,
-                size: _large ? 40 : (_medium ? 33 : 31),
-                color: Colors.orange[200],
-              )),
-        ),
-//        Positioned(
-//          top: _height/8,
-//          left: _width/1.75,
-//          child: Container(
-//            alignment: Alignment.center,
-//            height: _height/23,
-//            padding: EdgeInsets.all(5),
-//            decoration: BoxDecoration(
-//              shape: BoxShape.circle,
-//              color:  Colors.orange[100],
-//            ),
-//            child: GestureDetector(
-//                onTap: (){
-//                  print('Adding photo');
-//                },
-//                child: Icon(Icons.add_a_photo, size: _large? 22: (_medium? 15: 13),)),
-//          ),
-//        ),
       ],
     );
   }
@@ -464,7 +424,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       await setUserId("$id");
       await setPhoneNumber(phone);
 
-      navigateToPageRemoveHistory(context, DashboardPage());
+      navigateToPageRemoveHistory(context, HomePage());
     } else {
       DangerAlertBox(
           context: context,

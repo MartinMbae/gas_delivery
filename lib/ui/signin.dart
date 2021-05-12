@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
-import 'package:gas_delivery/pages/dashboard.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gas_delivery/fragments/dashboard.dart';
+import 'package:gas_delivery/pages/homepage.dart';
 import 'package:gas_delivery/ui/widgets/custom_shape.dart';
 import 'package:gas_delivery/ui/widgets/responsive_ui.dart';
 import 'package:gas_delivery/utils/constants.dart';
@@ -317,8 +319,12 @@ class _SignInScreenState extends State<SignInScreen> {
         'email': email,
         'password': password,
       }).timeout(Duration(seconds: 20));
-    } on Exception {
-      response = null;
+    } catch(e) {
+           DangerAlertBox(
+          context: context,
+          title: "Error",
+          messageText: e.toString());
+      return null;
     }
     _progressDialog.dismiss();
 
@@ -368,7 +374,7 @@ class _SignInScreenState extends State<SignInScreen> {
       await setUserId("$id");
       await setPhoneNumber(phone);
 
-      navigateToPageRemoveHistory(context, DashboardPage());
+      navigateToPageRemoveHistory(context, HomePage());
     } else {
       DangerAlertBox(
           context: context,

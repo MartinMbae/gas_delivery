@@ -32,34 +32,9 @@ class _DashboardPageState extends State<DashboardPage> {
       Map<String, dynamic> map = json.decode(response.body);
       return map;
     }
-
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(APP_NAME),
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (value)async{
-              switch (value) {
-                case 'Logout':
-                  await clearAllPreferences();
-                  navigateToPageRemoveHistory(context, SignInPage());
-                  break;
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return {'Logout'}.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          ),
-        ],
-      ),
       body: Container(
-
         height: size.height,
         color: Colors.grey[200],
         child: SingleChildScrollView(

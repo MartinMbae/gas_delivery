@@ -74,7 +74,7 @@ class _OngoingOrderHolderState extends State<OngoingOrderHolder> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Image.asset("assets/logo.png", width: 20, height: 20,),
+                      Image.asset("assets/logo.jpg", width: 20, height: 20,),
                       Text(widget.ongoingOrder.company_name, style: Theme.of(context).textTheme.caption, overflow: TextOverflow.ellipsis, maxLines: 1,),
                     ],
                   ),
@@ -123,6 +123,15 @@ class _OngoingOrderHolderState extends State<OngoingOrderHolder> {
                 children: <TextSpan>[
                   TextSpan(text: "Order Placed at : ", style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8)),
                   TextSpan(text: "${widget.ongoingOrder.created_at_parsed}", style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8, color: primaryColor)),
+                ],
+              ),
+            ),
+            SizedBox(height: 20,),
+            RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(text: "Order Status: ", style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8)),
+                  TextSpan(text: "${widget.ongoingOrder.status}".toUpperCase(), style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8, color: Colors.green)),
                 ],
               ),
             ),

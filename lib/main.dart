@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gas_delivery/pages/dashboard.dart';
+import 'package:gas_delivery/fragments/dashboard.dart';
 import 'package:gas_delivery/pages/splash.dart';
 import 'package:gas_delivery/ui/signin.dart';
 import 'package:gas_delivery/ui/signup.dart';
@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    return  MaterialApp(
+     debugShowCheckedModeBanner: false,
      theme: ThemeData(
        primaryColor: primaryColor,
        primaryColorDark: primaryColorDark,

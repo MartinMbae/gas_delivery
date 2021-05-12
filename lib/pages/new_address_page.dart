@@ -200,7 +200,7 @@ class _NewAddressState extends State<NewAddress> {
       Navigator.pop(context);
       SuccessAlertBox(
           context: context,
-          title: "Error",
+          title: "Success",
           messageText: responseAsJson['message']);
     } else {
       DangerAlertBox(

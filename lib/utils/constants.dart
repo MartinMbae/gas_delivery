@@ -9,3 +9,7 @@ final String APP_NAME = "Asapenergies";
  enum SELECT_OPTIONS_ITEMS{
   REFILL, NEW_PURCHASE
 }
+
+ enum MENU_ITEM{
+  HOME, MY_ORDERS, MY_PROFILE, LOGOUT
+}
