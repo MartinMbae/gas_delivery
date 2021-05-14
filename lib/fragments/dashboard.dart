@@ -29,6 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
       if (response.statusCode != 200) {
         throw new Exception('Error fetching your orders');
       }
+
       Map<String, dynamic> map = json.decode(response.body);
       return map;
     }
@@ -59,27 +60,31 @@ class _DashboardPageState extends State<DashboardPage> {
                     }
                     List<dynamic> incidents = mapp['orders'];
                     bool hasData = incidents.length > 0;
+
+                    if(!hasData){
+                      return Column(
+                        children: [
+                          SizedBox(height: 40,),
+                          Image.asset('assets/not_found.png', height: 80, width: 80,),
+                          Text("Oops! No orders found",style: Theme.of(context).textTheme.caption,)
+                        ],
+                      );
+                    }
                     return ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: incidents.length,
                         itemBuilder: (context, index) {
-                          return hasData
-                              ? OngoingOrderHolder(
+                          return OngoingOrderHolder(
                             ongoingOrder:  OngoingOrder.fromJson(incidents[index]),
-                          )
-                              : Column(
-                            children: [
-                              SizedBox(height: 40,),
-                              Image.asset('assets/not_found.png', height: 80, width: 80,),
-                              Text("Oops! No orders found",style: Theme.of(context).textTheme.caption,)
-                            ],
                           );
                         });
                   } else if(snapshot.hasError){
                     return Text(snapshot.error.toString());
                   }else {
-                    return Center(child: Container(child: CircularProgressIndicator()));
+                    return Container(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                        child: Center(child: CircularProgressIndicator()));
                   }
               },
                 future: fetchOngoingOrders(),),

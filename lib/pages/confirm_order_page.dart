@@ -6,6 +6,7 @@ import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
 import 'package:gas_delivery/models/GasItem.dart';
 import 'package:gas_delivery/models/address.dart';
 import 'package:gas_delivery/fragments/dashboard.dart';
+import 'package:gas_delivery/pages/crbPay.dart';
 import 'package:gas_delivery/pages/homepage.dart';
 import 'package:gas_delivery/utils/colors.dart';
 import 'package:gas_delivery/utils/constants.dart';
@@ -260,10 +261,9 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
         return null;
       }
     }
-
     Map<String, dynamic> responseAsJson = jsonDecode(response.body);
     if (responseAsJson['success'] == true) {
-      navigateToPageRemoveHistory(context, HomePage());
+      navigateToPageRemoveHistory(context, PayPage(count: widget.count, gasItem: widget.gasItem, ));
       SuccessAlertBox(
           context: context,
           title: "Success",

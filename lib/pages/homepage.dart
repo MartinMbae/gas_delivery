@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gas_delivery/fragments/contact_us_fragment.dart';
 import 'package:gas_delivery/fragments/my_orders.dart';
 import 'package:gas_delivery/fragments/profile_fragment.dart';
 import 'package:gas_delivery/ui/signin.dart';
@@ -22,6 +23,7 @@ class HomePage extends StatefulWidget {
     new DrawerItem("Home", Icons.home, MENU_ITEM.HOME),
     new DrawerItem("My Orders", Icons.list, MENU_ITEM.MY_ORDERS),
     new DrawerItem("Profile", Icons.person, MENU_ITEM.MY_PROFILE),
+    new DrawerItem("Follow Us", Icons.contact_mail_outlined, MENU_ITEM.CONTACT_US),
     new DrawerItem("Log Out", Icons.logout, MENU_ITEM.LOGOUT)
   ];
 
@@ -42,6 +44,8 @@ class HomePageState extends State<HomePage> {
         return new MyOrdersPage();
       case MENU_ITEM.MY_PROFILE:
         return new ProfileFragment();
+      case MENU_ITEM.CONTACT_US:
+        return new ContactFragment();
       case MENU_ITEM.LOGOUT:
         logout();
         navigateToPageRemoveHistory(context, SignInPage());
