@@ -79,7 +79,7 @@ class _GasItemHolderState extends State<GasItemHolder> {
                     children: [
                       Hero(
                           tag: 'imageTag${widget.gasItem.id}',
-                          child: Image.asset("assets/logo.jpg", width: 20, height: 20,)
+                          child: Image.asset("assets/logo.jpeg", width: 20, height: 20,)
                       ),
                       Hero(
                           tag: 'comapanyName${widget.gasItem.id}',

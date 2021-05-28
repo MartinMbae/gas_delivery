@@ -25,7 +25,12 @@ class _DashboardPageState extends State<DashboardPage> {
     Future<Map<String, dynamic>> fetchOngoingOrders() async {
       var userId = await getUserId();
       var url = "${BASE_URL}api/get_orders/$userId";
-      var response = await http.get( Uri.parse(url)).timeout(Duration(seconds: 30));
+      var response = await http.get( Uri.parse(url)).timeout(Duration(seconds: 30),
+      onTimeout: (){
+
+        throw new Exception('Action took so long');
+      }
+      );
       if (response.statusCode != 200) {
         throw new Exception('Error fetching your orders');
       }
@@ -80,7 +85,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           );
                         });
                   } else if(snapshot.hasError){
-                    return Text(snapshot.error.toString());
+                    return EmptyPage(icon: Icons.error, message: snapshot.error.toString(),height: 200.0,);
                   }else {
                     return Container(
                       height: MediaQuery.of(context).size.height * 0.3,

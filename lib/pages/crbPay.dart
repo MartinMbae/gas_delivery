@@ -78,7 +78,7 @@ class _PayPageState extends State<PayPage> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Image.asset(
-                                "assets/logo.jpg",
+                                "assets/logo.jpeg",
                                 width: 60,
                                 height: 60,
                               ),
@@ -263,6 +263,7 @@ class _PayPageState extends State<PayPage> {
       response = null;
     }
     _progressDialog.dismiss();
+
 
     if (response == null) {
       DangerAlertBox(

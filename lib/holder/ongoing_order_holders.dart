@@ -74,7 +74,7 @@ class _OngoingOrderHolderState extends State<OngoingOrderHolder> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Image.asset("assets/logo.jpg", width: 20, height: 20,),
+                      Image.asset("assets/logo.jpeg", width: 20, height: 20,),
                       Text(widget.ongoingOrder.company_name, style: Theme.of(context).textTheme.caption, overflow: TextOverflow.ellipsis, maxLines: 1,),
                     ],
                   ),

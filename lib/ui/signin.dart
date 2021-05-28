@@ -313,6 +313,8 @@ class _SignInScreenState extends State<SignInScreen> {
       _progressDialog.show();
     }catch(Excep){}
     String url = BASE_URL + 'api/login';
+
+    print(url);
     dynamic response;
     try {
       response = await http.post(Uri.parse(url), body: {

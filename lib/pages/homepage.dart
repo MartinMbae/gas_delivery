@@ -106,7 +106,7 @@ class HomePageState extends State<HomePage> {
               new UserAccountsDrawerHeader(
                   accountName: new Text("$username"),
                 accountEmail: Text("$email"),
-                currentAccountPicture: Image.asset('assets/logo.jpg'),),
+                currentAccountPicture: Image.asset('assets/logo.jpeg'),),
               new Column(children: drawerOptions)
             ],
           ),

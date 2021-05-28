@@ -67,7 +67,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Image.asset("assets/logo.jpg", width: 60, height: 60,),
+                              Image.asset("assets/logo.jpeg", width: 60, height: 60,),
                               Text(widget.gasItem.company_name, style: Theme.of(context).textTheme.caption, overflow: TextOverflow.ellipsis, maxLines: 1,),
                             ],
                           ),

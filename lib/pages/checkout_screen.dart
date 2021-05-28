@@ -44,7 +44,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                         children: [
                           Hero(
                               tag: 'imageTag${widget.gasItem.id}',
-                              child: Image.asset("assets/logo.jpg", width: 60, height: 60,)),
+                              child: Image.asset("assets/logo.jpeg", width: 60, height: 60,)),
                           Hero(
                               tag: 'comapanyName${widget.gasItem.id}',
                               child: Text(widget.gasItem.company_name, style: Theme.of(context).textTheme.caption, overflow: TextOverflow.ellipsis, maxLines: 1,)),
