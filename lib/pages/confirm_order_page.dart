@@ -180,7 +180,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(text: "Mpesa Till Number : ", style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8)),
-                          TextSpan(text: "789087", style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8, color: primaryColor)),
+                          TextSpan(text: "5096743", style: Theme.of(context).textTheme.subtitle1!.apply(fontSizeFactor: 0.8, color: primaryColor)),
                         ],
                       ),
                     ),
@@ -261,9 +261,12 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
         return null;
       }
     }
+
     Map<String, dynamic> responseAsJson = jsonDecode(response.body);
     if (responseAsJson['success'] == true) {
-      navigateToPageRemoveHistory(context, PayPage(count: widget.count, gasItem: widget.gasItem, ));
+      var orderID = responseAsJson['order_id'];
+      navigateToPageRemoveHistory(context, PayPage(count: widget.count, gasItem: widget.gasItem, order_id: orderID, ));
+
       SuccessAlertBox(
           context: context,
           title: "Success",

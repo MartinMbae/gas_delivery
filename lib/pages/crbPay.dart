@@ -15,8 +15,9 @@ import 'package:http/http.dart' as http;
 class PayPage extends StatefulWidget {
   final GasItem gasItem;
   final int count;
+  final order_id;
 
-  const PayPage({Key? key, required this.gasItem, required this.count})
+  const PayPage({Key? key, required this.gasItem, required this.count, required this.order_id})
       : super(key: key);
 
   @override
@@ -204,21 +205,24 @@ class _PayPageState extends State<PayPage> {
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        OutlinedButton.icon(
+                            onPressed: () async {
+                              navigateToPageRemoveHistory(context, HomePage());
+                            },
+                            icon: Icon(Icons.cancel, color: Colors.red,),
+                            label: Text("I'll pay later")),
                         OutlinedButton.icon(
                             onPressed: () async {
                               var user_id = await getUserId();
                               var phone = phoneController.text;
                               startPay(
-                                  int.parse(widget.gasItem.price) *
-                                      widget.count,
-                                  widget.count,
-                                  widget.gasItem.id,
+                                  widget.order_id,
                                   user_id!,
                                   phone);
                             },
-                            icon: Icon(Icons.attach_money_outlined),
+                            icon: Icon(Icons.attach_money_outlined, color: Colors.green,),
                             label: Text("Pay Now")),
                       ],
                     ),
@@ -233,9 +237,7 @@ class _PayPageState extends State<PayPage> {
   }
 
   Future<void> startPay(
-    int total_price,
-    int count,
-    int gas_id,
+    int order_id,
     String user_id,
     String phone,
   ) async {
@@ -254,16 +256,14 @@ class _PayPageState extends State<PayPage> {
     try {
       response = await http.post(Uri.parse(url), body: {
         'user_id': "$user_id",
-        'total_price': "$total_price",
-        'count': "$count",
-        'gas_id': "$gas_id",
+        'order_id': "$order_id",
         'phone': "$phone",
       }).timeout(Duration(seconds: 20));
     } on Exception {
       response = null;
     }
-    _progressDialog.dismiss();
 
+    _progressDialog.dismiss();
 
     if (response == null) {
       DangerAlertBox(

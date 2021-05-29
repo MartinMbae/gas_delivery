@@ -71,7 +71,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         children: [
                           SizedBox(height: 40,),
                           Image.asset('assets/not_found.png', height: 80, width: 80,),
-                          Text("Oops! No orders found",style: Theme.of(context).textTheme.caption,)
+                          Text("Oops! No ongoing orders found",style: Theme.of(context).textTheme.caption,)
                         ],
                       );
                     }
