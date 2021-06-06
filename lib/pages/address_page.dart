@@ -3,21 +3,20 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:gas_delivery/holder/address_holders.dart';
-import 'package:gas_delivery/models/GasItem.dart';
 import 'package:gas_delivery/models/address.dart';
 import 'package:gas_delivery/pages/new_address_page.dart';
 import 'package:gas_delivery/utils/constants.dart';
 import 'package:gas_delivery/utils/shared_pref.dart';
 import 'package:http/http.dart' as http;
+
 import 'empty_screen.dart';
 
 class AddressPage extends StatefulWidget {
 
-  final GasItem gasItem;
-  final int count;
-
-  const AddressPage({Key? key, required this.gasItem, required this.count}) : super(key: key);
+  final FlutterCart flutterCart;
+  const AddressPage({Key? key, required this.flutterCart}) : super(key: key);
 
   @override
   _AddressPageState createState() => _AddressPageState();
@@ -28,7 +27,9 @@ class _AddressPageState extends State<AddressPage>{
   Future<Map<String, dynamic>> fetchMyAddresses() async {
     var userId = await getUserId();
     var url = "${BASE_URL}api/get_addresses/$userId";
-    var response = await http.get( Uri.parse(url)).timeout(Duration(seconds: 30));
+    var response = await http.get( Uri.parse(url)).timeout(Duration(seconds: 30), onTimeout: (){
+      throw new Exception('Action took so long');
+    });
     if (response.statusCode != 200) {
       throw new Exception('Error fetching your addresses');
     }
@@ -97,8 +98,7 @@ class _AddressPageState extends State<AddressPage>{
                           if(hasData){
                             return AddressItemHolder(
                               userAddress: UserAddress.fromJson(incidents[index]),
-                              count: widget.count,
-                              gasItem: widget.gasItem,
+                              flutterCart: widget.flutterCart,
                             );
                           }else{
                             return EmptyPage(icon: Icons.error, message: "No address found", height: 300,);

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:gas_delivery/holder/simple_row.dart';
 import 'package:gas_delivery/models/GasItem.dart';
 import 'package:gas_delivery/models/address.dart';
@@ -14,14 +15,13 @@ import 'package:gas_delivery/utils/custom_methods.dart';
 
 class AddressItemHolder extends StatefulWidget {
   final UserAddress userAddress;
-  final GasItem gasItem;
-  final int count;
+
+  final FlutterCart flutterCart;
 
   const AddressItemHolder(
       {Key? key,
         required this.userAddress,
-        required this.gasItem,
-        required this.count,
+        required this.flutterCart
       })
       : super(key: key);
 
@@ -87,7 +87,7 @@ class _AddressItemHolderState extends State<AddressItemHolder> {
               ),
               onTap: (){
 
-                navigateToPage(context, ConfirmOrderPage(gasItem: widget.gasItem, count: widget.count, userAddress: widget.userAddress));
+                navigateToPage(context, ConfirmOrderPage(flutterCart: widget.flutterCart, userAddress: widget.userAddress));
               },
             )
 

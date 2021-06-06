@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class GasItem {
-  final id,company_id,classification,weight,initialPrice, price, availability,company_name;
+  final id,company_id,classification,weight,initialPrice, price, availability,company_name, url;
 
   GasItem({
     @required this.id,
@@ -12,6 +12,7 @@ class GasItem {
     @required this.price,
     @required this.availability,
     @required this.company_name,
+    @required this.url,
   });
 
   static GasItem fromJson(dynamic json) {
@@ -24,6 +25,21 @@ class GasItem {
       price: json['price'],
       availability: json['availability'],
       company_name: json['company_name'],
+      url: json['url'],
     );
+  }
+
+   Map<String, dynamic> toJson() {
+    return {
+      'id' : id,
+      'company_id' : company_id,
+      'classification' : classification,
+      'weight' : weight,
+      'initialPrice' : initialPrice,
+      'price' : price,
+      'availability' : availability,
+      'company_name' : company_name,
+      'url' : url,
+    };
   }
 }

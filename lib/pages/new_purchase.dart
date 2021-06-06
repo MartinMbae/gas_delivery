@@ -1,10 +1,15 @@
 import 'dart:convert';
 
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gas_delivery/holder/gasses_holders.dart';
 import 'package:gas_delivery/models/GasItem.dart';
+import 'package:gas_delivery/pages/checkout_screen.dart';
 import 'package:gas_delivery/pages/empty_screen.dart';
 import 'package:gas_delivery/utils/constants.dart';
+import 'package:gas_delivery/utils/custom_methods.dart';
 import 'package:http/http.dart' as http;
 
 class NewPurchasePage extends StatefulWidget {
@@ -30,11 +35,45 @@ class _NewPurchasePageState extends State<NewPurchasePage> {
     return map;
   }
 
+  var cartCount;
+  void refresh(int newCartCount) {
+    setState(() {
+      cartCount = newCartCount;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
+
+    var cart = FlutterCart();
+     cartCount = cart.getCartItemCount();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          GestureDetector(
+            onTap: (){
+              if(cartCount == 0){
+                Fluttertoast.showToast(msg: "You must first add items to cart", toastLength: Toast.LENGTH_LONG);
+              }else {
+                navigateToPage(
+                    context,
+                    CheckOutPage(
+                      flutterCart: cart,
+                    ));
+              }
+            },
+            child: Padding(
+              padding:  EdgeInsets.only(right: 20, top: 10),
+              child: Badge(
+                badgeContent: Text("$cartCount"),
+                child: Icon(Icons.shopping_cart),
+              ),
+            ),
+          )
+        ],
       ),
       body: Container(
         color: Colors.grey[100],
@@ -42,7 +81,6 @@ class _NewPurchasePageState extends State<NewPurchasePage> {
           future: fetchNewPurchases(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-
 
               Map<String, dynamic> mapp = (snapshot.data as Map<String, dynamic>);
               var success = mapp['success'];
@@ -57,6 +95,8 @@ class _NewPurchasePageState extends State<NewPurchasePage> {
                     return hasData
                         ? GasItemHolder(
                       gasItem: GasItem.fromJson(incidents[index]),
+                      flutterCart: cart,
+                        notifyParent: refresh
                     )
                         : EmptyPage(
                         icon: Icons.error, message: "No items found");
