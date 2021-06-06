@@ -322,30 +322,30 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
 
     List<CartItem> cartItems = widget.flutterCart.cartItem;
 
+    List<GasItem> gasItemList = [];
 
-    var i = 0;
-    Map<int, dynamic> cartMap = {};
     for (CartItem cartItem in cartItems) {
       GasItem gasItem = cartItem.productDetails;
-      cartMap[i] = jsonEncode(gasItem);
-      i++;
+      gasItemList.add(gasItem);
     }
 
-    Map<String, String> cartMap2 = {
-      "cart" : cartMap.toString(),
-    };
     Map<String, dynamic> requestData = {
       'user_id': "$user_id",
-      'total_price': "$total_price",
-      'count': "$count",
-      'cartItems': "$cartMap2",
+      'cartItems': "${jsonEncode(gasItemList)}",
       'address_id': "$address_id",
-      'gas_id': "$gas_id",
     };
 
+    print(jsonEncode(requestData));
+
     dynamic response;
+
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+
     try {
-      response = await http.post(Uri.parse(url), body: requestData).timeout(
+      response = await http.post(Uri.parse(url), body: jsonEncode(requestData),  headers: headers).timeout(
           Duration(seconds: 20));
     } on Exception {
       response = null;
@@ -363,10 +363,8 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
       Map<String, dynamic> responseError = jsonDecode(response.body);
       List<String> checks = [
         'user_id',
-        'total_price',
-        'count',
         'address_id',
-        'gas_id'
+        'cartItems'
       ];
       String errorMessage = "";
       for (String check in checks) {
