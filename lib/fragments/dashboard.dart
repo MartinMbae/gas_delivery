@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -21,6 +22,10 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
+
+    print("Opennned");
+    debugPrint("hjjhjjjjj");
+    log("kkkk");
 
     Future<Map<String, dynamic>> fetchOngoingOrders() async {
       var userId = await getUserId();

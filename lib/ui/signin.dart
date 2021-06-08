@@ -320,8 +320,10 @@ class _SignInScreenState extends State<SignInScreen> {
       response = await http.post(Uri.parse(url), body: {
         'email': email,
         'password': password,
-      }).timeout(Duration(seconds: 20));
+      }).timeout(Duration(seconds: 30));
     } catch(e) {
+
+      _progressDialog.dismiss();
            DangerAlertBox(
           context: context,
           title: "Error",

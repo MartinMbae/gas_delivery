@@ -27,7 +27,9 @@ class _NewPurchasePageState extends State<NewPurchasePage> {
 
   Future<Map<String, dynamic>> fetchNewPurchases() async {
     var url = "$BASE_URL${widget.url}";
-    var response = await http.get( Uri.parse(url)).timeout(Duration(seconds: 30));
+    var response = await http.get( Uri.parse(url)).timeout(Duration(seconds: 30), onTimeout: (){
+      throw new Exception("Please check your internet and try again");
+    });
     if (response.statusCode != 200) {
       throw new Exception('Error fetching available new Purchases');
     }
@@ -103,7 +105,7 @@ class _NewPurchasePageState extends State<NewPurchasePage> {
                   });
 
             } else if(snapshot.hasError){
-              return Text(snapshot.error.toString());
+              return EmptyPage(icon: Icons.error, message: snapshot.error.toString(),height: 200.0,);
             }else {
               return Center(child: CircularProgressIndicator());
             }

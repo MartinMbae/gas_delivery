@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 class GasItem {
   final id,company_id,classification,weight,initialPrice, price, availability,company_name, url;
 
+  int count = 1;
+
   GasItem({
     @required this.id,
     @required this.company_id,
@@ -40,6 +42,11 @@ class GasItem {
       'availability' : availability,
       'company_name' : company_name,
       'url' : url,
+      'count' : count,
     };
+  }
+
+  void setCount(int newCount){
+    count = newCount;
   }
 }

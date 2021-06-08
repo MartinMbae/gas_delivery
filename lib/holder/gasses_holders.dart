@@ -90,7 +90,7 @@ class _GasItemHolderState extends State<GasItemHolder> {
                   child: CachedNetworkImage(
                     height: 80,
                     width: 80,
-                    imageUrl: widget.gasItem.url,
+                    imageUrl: "${widget.gasItem.url}",
                     placeholder: (context, url) =>
                         Center(child: CircularProgressIndicator()),
                     errorWidget: (context, url, error) => Image.asset(

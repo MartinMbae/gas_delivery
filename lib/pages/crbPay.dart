@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:flutter/material.dart';
@@ -40,11 +41,13 @@ class _PayPageState extends State<PayPage> {
   @override
   void initState() {
     super.initState();
+    print("inittt");
     fetchPhoneNumber();
   }
 
   @override
   Widget build(BuildContext context) {
+
     _progressDialog = ArsProgressDialog(
       context,
       blur: 2,
@@ -71,6 +74,7 @@ class _PayPageState extends State<PayPage> {
                   children: [
                     Text('You have successfully placed your order. Please proceed to make your payment now.', textAlign: TextAlign.center, style: TextStyle(decoration: TextDecoration.underline, color: Colors.black87),),
                     ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: widget.flutterCart.getCartItemCount(),
                       itemBuilder: (context,index){
@@ -214,7 +218,8 @@ class _PayPageState extends State<PayPage> {
   }
 
   Future<void> startPay(
-    int order_id,
+
+    dynamic order_id,
     String user_id,
     String phone,
   ) async {
@@ -227,15 +232,21 @@ class _PayPageState extends State<PayPage> {
       return;
     }
 
+
     _progressDialog.show();
     String url = BASE_URL + 'api/pay';
+    Map<String, String> map = {
+      'user_id': "$user_id",
+      'order_id': order_id.toString(),
+      'phone': "$phone",
+    };
+
     dynamic response;
     try {
-      response = await http.post(Uri.parse(url), body: {
-        'user_id': "$user_id",
-        'order_id': "$order_id",
-        'phone': "$phone",
-      }).timeout(Duration(seconds: 20));
+      response = await http.post(Uri.parse(url), body: map).timeout(Duration(seconds: 30), onTimeout: (){
+        _progressDialog.dismiss();
+        throw new Exception("Error");
+      });
     } on Exception {
       response = null;
     }
@@ -253,10 +264,8 @@ class _PayPageState extends State<PayPage> {
       Map<String, dynamic> responseError = jsonDecode(response.body);
       List<String> checks = [
         'user_id',
-        'total_price',
-        'count',
-        'phone',
-        'gas_id'
+        'order_id',
+        'phone'
       ];
       String errorMessage = "";
       for (String check in checks) {
@@ -281,6 +290,7 @@ class _PayPageState extends State<PayPage> {
         return null;
       }
     }
+
 
     Map<String, dynamic> responseAsJson = jsonDecode(response.body);
     if (responseAsJson['success'] == true) {

@@ -34,6 +34,8 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
     _progressDialog = ArsProgressDialog(
       context,
       blur: 2,
@@ -59,6 +61,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                   children: [
 
                     ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: widget.flutterCart.getCartItemCount(),
                       itemBuilder: (context, index) {
@@ -326,6 +329,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
 
     for (CartItem cartItem in cartItems) {
       GasItem gasItem = cartItem.productDetails;
+      gasItem.setCount(cartItem.quantity);
       gasItemList.add(gasItem);
     }
 
@@ -335,8 +339,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
       'address_id': "$address_id",
     };
 
-    print(jsonEncode(requestData));
-
+    print(requestData);
     dynamic response;
 
     Map<String, String> headers = {
@@ -408,5 +411,4 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
       return null;
     }
   }
-
 }
