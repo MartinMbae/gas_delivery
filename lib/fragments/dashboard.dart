@@ -9,6 +9,7 @@ import 'package:gas_delivery/models/select_options.dart';
 import 'package:gas_delivery/pages/empty_screen.dart';
 import 'package:gas_delivery/pages/new_purchase.dart';
 import 'package:gas_delivery/ui/signin.dart';
+import 'package:gas_delivery/utils/colors.dart';
 import 'package:gas_delivery/utils/constants.dart';
 import 'package:gas_delivery/utils/custom_methods.dart';
 import 'package:gas_delivery/utils/shared_pref.dart';
@@ -22,10 +23,6 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
-
-    print("Opennned");
-    debugPrint("hjjhjjjjj");
-    log("kkkk");
 
     Future<Map<String, dynamic>> fetchOngoingOrders() async {
       var userId = await getUserId();
@@ -142,7 +139,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                  ));
                                   break;
                               }
-                            }, child: Text(selectOption.buttonText, style: Theme.of(context).textTheme.caption!.apply(color: Colors.white),)),
+                            }, child: Text(selectOption.buttonText, style: Theme.of(context).textTheme.caption!.apply(color: Colors.white),),
+                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(primaryColor)),
+                        ),
                       ],
                     ),
                   ),

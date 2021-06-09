@@ -106,7 +106,7 @@ class HomePageState extends State<HomePage> {
         width: MediaQuery.of(context).size.width * 0.75,
         child: new Drawer(
           child: new Column(
-            children: <Widget>[
+            children: [
               new UserAccountsDrawerHeader(
                   accountName: new Text("$username"),
                 accountEmail: Text("$email"),

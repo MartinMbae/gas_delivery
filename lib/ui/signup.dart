@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gas_delivery/fragments/dashboard.dart';
 import 'package:gas_delivery/pages/homepage.dart';
-import 'package:gas_delivery/ui/widgets/custom_shape.dart';
+import 'package:gas_delivery/ui/widgets/clipshape.dart';
 import 'package:gas_delivery/ui/widgets/customappbar.dart';
 import 'package:gas_delivery/ui/widgets/responsive_ui.dart';
+import 'package:gas_delivery/utils/colors.dart';
 import 'package:gas_delivery/utils/constants.dart';
 import 'package:gas_delivery/utils/custom_methods.dart';
 import 'package:gas_delivery/utils/shared_pref.dart';
@@ -63,8 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             padding: EdgeInsets.only(bottom: 50),
             child: Column(
               children: <Widget>[
-                Opacity(opacity: 0.88, child: CustomAppBar()),
-                clipShape(),
+                ClipShape(),
                 form(),
                 acceptTermsTextRow(),
                 SizedBox(
@@ -80,50 +79,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget clipShape() {
-    return Stack(
-      children: <Widget>[
-        Opacity(
-          opacity: 0.75,
-          child: ClipPath(
-            clipper: CustomShapeClipper(),
-            child: Container(
-              height: _large
-                  ? _height / 8
-                  : (_medium ? _height / 7 : _height / 6.5),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.orange[200] ?? Colors.orange,
-                    Colors.pinkAccent
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-        Opacity(
-          opacity: 0.5,
-          child: ClipPath(
-            clipper: CustomShapeClipper2(),
-            child: Container(
-              height: _large
-                  ? _height / 12
-                  : (_medium ? _height / 11 : _height / 10),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.orange[200] ?? Colors.orange,
-                    Colors.pinkAccent
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget form() {
     return Container(
@@ -139,10 +94,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: TextFormField(
                 controller: firstNameController,
                 keyboardType: TextInputType.text,
-                cursorColor: Colors.orange[200],
+                cursorColor: primaryColorLight,
                 decoration: InputDecoration(
                   prefixIcon:
-                      Icon(Icons.person, color: Colors.orange[200], size: 20),
+                      Icon(Icons.person, color: primaryColorLight, size: 20),
                   hintText: "First Name",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -161,10 +116,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: TextFormField(
                 controller: lastNameController,
                 keyboardType: TextInputType.text,
-                cursorColor: Colors.orange[200],
+                cursorColor: primaryColorLight,
                 decoration: InputDecoration(
                   prefixIcon:
-                      Icon(Icons.person, color: Colors.orange[200], size: 20),
+                      Icon(Icons.person, color: primaryColorLight, size: 20),
                   hintText: "Last Name",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -183,10 +138,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: TextFormField(
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
-                cursorColor: Colors.orange[200],
+                cursorColor: primaryColorLight,
                 decoration: InputDecoration(
                   prefixIcon:
-                      Icon(Icons.person, color: Colors.orange[200], size: 20),
+                      Icon(Icons.email, color: primaryColorLight, size: 20),
                   hintText: "Email Address",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -206,10 +161,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: phoneController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                cursorColor: Colors.orange[200],
+                cursorColor: primaryColorLight,
                 decoration: InputDecoration(
                   prefixIcon:
-                      Icon(Icons.phone, color: Colors.orange[200], size: 20),
+                      Icon(Icons.phone, color: primaryColorLight, size: 20),
                   hintText: "Phone Number",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -228,11 +183,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: TextFormField(
                 controller: passwordController,
                 keyboardType: TextInputType.text,
-                cursorColor: Colors.orange[200],
+                cursorColor: primaryColorLight,
                 obscureText: true,
                 decoration: InputDecoration(
                   prefixIcon:
-                      Icon(Icons.lock, color: Colors.orange[200], size: 20),
+                      Icon(Icons.lock, color: primaryColorLight, size: 20),
                   hintText: "Password",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -257,7 +212,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Checkbox(
-              activeColor: Colors.orange[200],
+              activeColor: primaryColorLight,
               value: checkBoxValue,
               onChanged: (bool? newValue) {
                 setState(() {
@@ -305,9 +260,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         width: _large ? _width / 4 : (_medium ? _width / 3.75 : _width / 3.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          gradient: LinearGradient(
-            colors: [Colors.orange[200] ?? Colors.orange, Colors.pinkAccent],
-          ),
+          color: primaryColor,
         ),
         padding: const EdgeInsets.all(12.0),
         child: Text(
@@ -339,7 +292,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               "Sign in",
               style: TextStyle(
                   fontWeight: FontWeight.w800,
-                  color: Colors.orange[200],
+                  color: primaryColorLight,
                   fontSize: 19),
             ),
           )

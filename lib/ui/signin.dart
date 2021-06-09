@@ -4,8 +4,9 @@ import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
 import 'package:gas_delivery/pages/homepage.dart';
-import 'package:gas_delivery/ui/widgets/custom_shape.dart';
+import 'package:gas_delivery/ui/widgets/clipshape.dart';
 import 'package:gas_delivery/ui/widgets/responsive_ui.dart';
+import 'package:gas_delivery/utils/colors.dart';
 import 'package:gas_delivery/utils/constants.dart';
 import 'package:gas_delivery/utils/custom_methods.dart';
 import 'package:gas_delivery/utils/shared_pref.dart';
@@ -62,7 +63,7 @@ class _SignInScreenState extends State<SignInScreen> {
           padding: EdgeInsets.only(bottom: 50),
           child: Column(
             children: <Widget>[
-              clipShape(),
+              ClipShape(),
               welcomeTextRow(),
               signInTextRow(),
               form(),
@@ -77,50 +78,6 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Widget clipShape() {
-    return Stack(
-      children: <Widget>[
-        Opacity(
-          opacity: 0.75,
-          child: ClipPath(
-            clipper: CustomShapeClipper(),
-            child: Container(
-              height: _large
-                  ? _height / 4
-                  : (_medium ? _height / 3.75 : _height / 3.5),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.orange[200] ?? Colors.orange,
-                    Colors.pinkAccent
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-        Opacity(
-          opacity: 0.5,
-          child: ClipPath(
-            clipper: CustomShapeClipper2(),
-            child: Container(
-              height: _large
-                  ? _height / 4.5
-                  : (_medium ? _height / 4.25 : _height / 4),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.orange[200] ?? Colors.orange,
-                    Colors.pinkAccent
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget welcomeTextRow() {
     return Container(
@@ -170,10 +127,10 @@ class _SignInScreenState extends State<SignInScreen> {
               child: TextFormField(
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
-                cursorColor: Colors.orange[200],
+                cursorColor: primaryColorLight,
                 decoration: InputDecoration(
                   prefixIcon:
-                      Icon(Icons.email, color: Colors.orange[200], size: 20),
+                      Icon(Icons.email, color: primaryColorLight, size: 20),
                   hintText: "Email Address",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -191,10 +148,10 @@ class _SignInScreenState extends State<SignInScreen> {
               child: TextFormField(
                 controller: passwordController,
                 obscureText: true,
-                cursorColor: Colors.orange[200],
+                cursorColor: primaryColorLight,
                 decoration: InputDecoration(
                   prefixIcon:
-                      Icon(Icons.lock, color: Colors.orange[200], size: 20),
+                      Icon(Icons.lock, color: primaryColorLight, size: 20),
                   hintText: "Password",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -235,7 +192,7 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Text(
               "Recover",
               style: TextStyle(
-                  fontWeight: FontWeight.w600, color: Colors.orange[200]),
+                  fontWeight: FontWeight.w600, color: primaryColorLight),
             ),
           )
         ],
@@ -259,12 +216,7 @@ class _SignInScreenState extends State<SignInScreen> {
         width: _large ? _width / 4 : (_medium ? _width / 3.75 : _width / 3.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          gradient: LinearGradient(
-            colors: <Color>[
-              Colors.orange[200] ?? Colors.orange,
-              Colors.pinkAccent
-            ],
-          ),
+          color: primaryColor,
         ),
         padding: const EdgeInsets.all(12.0),
         child: Text('SIGN IN',
@@ -296,7 +248,7 @@ class _SignInScreenState extends State<SignInScreen> {
               "Sign up",
               style: TextStyle(
                   fontWeight: FontWeight.w800,
-                  color: Colors.orange[200],
+                  color: primaryColorLight,
                   fontSize: _large ? 19 : (_medium ? 17 : 15)),
             ),
           )
