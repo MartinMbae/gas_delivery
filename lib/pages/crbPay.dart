@@ -41,7 +41,6 @@ class _PayPageState extends State<PayPage> {
   @override
   void initState() {
     super.initState();
-    print("inittt");
     fetchPhoneNumber();
   }
 
@@ -240,7 +239,7 @@ class _PayPageState extends State<PayPage> {
       'order_id': order_id.toString(),
       'phone': "$phone",
     };
-
+    print(map);
     dynamic response;
     try {
       response = await http.post(Uri.parse(url), body: map).timeout(Duration(seconds: 30), onTimeout: (){

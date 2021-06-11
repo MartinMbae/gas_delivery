@@ -2,20 +2,16 @@ import 'dart:convert';
 
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
-import 'package:gas_delivery/pages/homepage.dart';
-import 'package:gas_delivery/ui/forgot_password.dart';
 import 'package:gas_delivery/ui/widgets/clipshape.dart';
 import 'package:gas_delivery/ui/widgets/responsive_ui.dart';
 import 'package:gas_delivery/utils/colors.dart';
 import 'package:gas_delivery/utils/constants.dart';
 import 'package:gas_delivery/utils/custom_methods.dart';
-import 'package:gas_delivery/utils/shared_pref.dart';
 import 'package:gas_delivery/utils/validator.dart';
 import 'package:http/http.dart' as http;
 
-class SignInPage extends StatelessWidget {
+class ForgotPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +32,7 @@ class _SignInScreenState extends State<SignInScreen> {
   late bool _large;
   late bool _medium;
 
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> _key = GlobalKey();
 
@@ -66,34 +62,13 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             children: <Widget>[
               ClipShape(),
-              welcomeTextRow(),
               signInTextRow(),
               form(),
-              forgetPassTextRow(),
               SizedBox(height: _height / 12),
               button(),
-              signUpTextRow(),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-
-  Widget welcomeTextRow() {
-    return Container(
-      margin: EdgeInsets.only(left: _width / 20, top: _height / 100),
-      child: Row(
-        children: <Widget>[
-          Text(
-            "Welcome",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: _large ? 60 : (_medium ? 50 : 40),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -103,11 +78,14 @@ class _SignInScreenState extends State<SignInScreen> {
       margin: EdgeInsets.only(left: _width / 15.0),
       child: Row(
         children: <Widget>[
-          Text(
-            "Sign in to your account",
-            style: TextStyle(
-              fontWeight: FontWeight.w200,
-              fontSize: _large ? 20 : (_medium ? 17.5 : 15),
+          Flexible(
+            child: Text(
+              "Provide your email to receive password reset link",
+              style: TextStyle(
+                fontWeight: FontWeight.w200,
+                fontSize: _large ? 20 : (_medium ? 17.5 : 15),
+              ),
+              textAlign: TextAlign.center,
             ),
           ),
         ],
@@ -127,79 +105,24 @@ class _SignInScreenState extends State<SignInScreen> {
               borderRadius: BorderRadius.circular(30.0),
               elevation: 8,
               child: TextFormField(
-                controller: phoneController,
-                keyboardType: TextInputType.phone,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
                 cursorColor: primaryColorLight,
                 decoration: InputDecoration(
                   prefixIcon:
-                      Icon(Icons.dialpad, color: primaryColorLight, size: 20),
-                  hintText: "Phone Number",
+                      Icon(Icons.email, color: primaryColorLight, size: 20),
+                  hintText: "Email Address",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                       borderSide: BorderSide.none),
                 ),
                 validator: (value) {
-                  Validator().validateMobile(value!);
-                },
-              ),
-            ),
-            SizedBox(height: _height / 40.0),
-            Material(
-              borderRadius: BorderRadius.circular(30.0),
-              elevation: 8,
-              child: TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                cursorColor: primaryColorLight,
-                decoration: InputDecoration(
-                  prefixIcon:
-                      Icon(Icons.lock, color: primaryColorLight, size: 20),
-                  hintText: "Password",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide.none),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Provide password';
-                  }
-                  return null;
+                  Validator().validateEmail(value!);
                 },
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget forgetPassTextRow() {
-    return Container(
-      margin: EdgeInsets.only(top: _height / 40.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            "Forgot your password?",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: _large ? 14 : (_medium ? 12 : 10)),
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          GestureDetector(
-            onTap: () {
-              navigateToPage(context, ForgotPasswordPage());
-            },
-            child: Text(
-              "Recover",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600, color: primaryColorLight),
-            ),
-          )
-        ],
       ),
     );
   }
@@ -210,83 +133,44 @@ class _SignInScreenState extends State<SignInScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
         if (_key.currentState!.validate()) {
-          loginUser(phoneController.text, passwordController.text);
+          requestPasswordReset(emailController.text);
         }
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
       child: Container(
         alignment: Alignment.center,
-        width: _large ? _width / 4 : (_medium ? _width / 3.75 : _width / 3.5),
+        width: _large ? _width / 4 : (_medium ? _width / 2.75 : _width / 2.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
           color: primaryColor,
         ),
         padding: const EdgeInsets.all(12.0),
-        child: Text('SIGN IN',
+        child: Text('Request reset link',
             style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10))),
       ),
     );
   }
 
-  Widget signUpTextRow() {
-    return Container(
-      margin: EdgeInsets.only(top: _height / 120.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            "Don't have an account?",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: _large ? 14 : (_medium ? 12 : 10)),
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamed(SIGN_UP);
-            },
-            child: Text(
-              "Sign up",
-              style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  color: primaryColorLight,
-                  fontSize: _large ? 19 : (_medium ? 17 : 15)),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Future<void> loginUser(
-    String phone,
-    String password,
-  ) async {
-    try{
+  Future<void> requestPasswordReset(  String email) async {
+    try {
       _progressDialog.show();
-    }catch(Excep){}
-    String url = BASE_URL + 'api/login';
+    } catch (Excep) {}
+    String url = BASE_URL + 'api/forgot_password';
     dynamic response;
     try {
       response = await http.post(Uri.parse(url), body: {
-        'phone': phone,
-        'password': password,
+        'email': email,
       }).timeout(Duration(seconds: 30));
-    } catch(e) {
-
+    } catch (e) {
       _progressDialog.dismiss();
-           DangerAlertBox(
-          context: context,
-          title: "Error",
-          messageText: e.toString());
+      DangerAlertBox(
+          context: context, title: "Error", messageText: e.toString());
       return null;
     }
-    try{
+    try {
       _progressDialog.dismiss();
-    }catch(Excep){}
+    } catch (Excep) {}
 
     if (response == null) {
       DangerAlertBox(
@@ -297,7 +181,7 @@ class _SignInScreenState extends State<SignInScreen> {
       return null;
     } else if (response.statusCode != 200) {
       Map<String, dynamic> responseError = jsonDecode(response.body);
-      List<String> checks = ['phone', 'password'];
+      List<String> checks = ['email'];
       String errorMessage = "";
       for (String check in checks) {
         if (responseError.containsKey(check)) {
@@ -324,17 +208,11 @@ class _SignInScreenState extends State<SignInScreen> {
 
     Map<String, dynamic> responseAsJson = jsonDecode(response.body);
     if (responseAsJson['success'] == true) {
-      var name = responseAsJson['user']['name'];
-      var id = responseAsJson['user']['id'];
-      var email = responseAsJson['user']['email'];
-      var phone = responseAsJson['user']['phone'];
-
-      await setName(name);
-      await setEmail(email);
-      await setUserId("$id");
-      await setPhoneNumber(phone);
-
-      navigateToPageRemoveHistory(context, HomePage());
+      navigateToPageRemoveHistory(context, SignInScreen());
+      SuccessAlertBox(
+          context: context,
+          title: "Successful",
+          messageText: responseAsJson['message']);
     } else {
       DangerAlertBox(
           context: context,

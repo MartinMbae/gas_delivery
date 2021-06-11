@@ -2,7 +2,7 @@ final String SIGN_IN = 'signin';
 final String SIGN_UP ='signup';
 final String DASHBOARD ='dashboard';
 final String SPLASHSCREEN ='splash_screen';
-final String BASE_URL = "https://app.asapenergies.co.ke/";
+final String BASE_URL = "https://admin.asapenergies.co.ke/";
 final String APP_NAME = "Asapenergies";
 
 
