@@ -208,7 +208,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
     Map<String, dynamic> responseAsJson = jsonDecode(response.body);
     if (responseAsJson['success'] == true) {
-      navigateToPageRemoveHistory(context, SignInScreen());
+    await  navigateToPageRemoveHistory(context, SignInScreen());
       SuccessAlertBox(
           context: context,
           title: "Successful",

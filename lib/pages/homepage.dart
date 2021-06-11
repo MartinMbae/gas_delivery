@@ -4,6 +4,7 @@ import 'package:gas_delivery/fragments/contact_us_fragment.dart';
 import 'package:gas_delivery/fragments/my_orders.dart';
 import 'package:gas_delivery/fragments/my_payments.dart';
 import 'package:gas_delivery/fragments/profile_fragment.dart';
+import 'package:gas_delivery/main.dart';
 import 'package:gas_delivery/ui/signin.dart';
 import 'package:gas_delivery/utils/constants.dart';
 import 'package:gas_delivery/utils/custom_methods.dart';
@@ -52,7 +53,7 @@ class HomePageState extends State<HomePage> {
         return new ContactFragment();
       case MENU_ITEM.LOGOUT:
         logout();
-        navigateToPageRemoveHistory(context, SignInPage());
+        navigateToPageRemoveHistory(context, MyApp());
         break;
     }
   }

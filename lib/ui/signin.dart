@@ -190,8 +190,8 @@ class _SignInScreenState extends State<SignInScreen> {
             width: 5,
           ),
           GestureDetector(
-            onTap: () {
-              navigateToPage(context, ForgotPasswordPage());
+            onTap: (){
+            navigateToPage(context, ForgotPasswordPage());
             },
             child: Text(
               "Recover",
