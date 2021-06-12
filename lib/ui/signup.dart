@@ -159,7 +159,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               elevation: 8,
               child: TextFormField(
                 controller: phoneController,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.phone,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 cursorColor: primaryColorLight,
                 decoration: InputDecoration(

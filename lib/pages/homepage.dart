@@ -52,8 +52,12 @@ class HomePageState extends State<HomePage> {
       case MENU_ITEM.CONTACT_US:
         return new ContactFragment();
       case MENU_ITEM.LOGOUT:
-        logout();
-        navigateToPageRemoveHistory(context, MyApp());
+       logout();
+       Future.delayed(Duration.zero,
+           (){
+             navigateToPageRemoveHistory(context, SignInPage());
+           }
+       );
         break;
     }
   }
