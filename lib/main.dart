@@ -53,7 +53,6 @@ class MyApp extends StatelessWidget {
      routes: <String, WidgetBuilder>{
        SIGN_IN: (BuildContext context) => SignInPage(),
        SIGN_UP: (BuildContext context) => SignUpScreen(),
-       DASHBOARD: (BuildContext context) => DashboardPage(),
        SPLASHSCREEN: (BuildContext context) => SplashScreen(),
      },
      initialRoute: SPLASHSCREEN,

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:gas_delivery/holder/accessory_holders.dart';
 import 'package:gas_delivery/holder/ongoing_order_holders.dart';
 import 'package:gas_delivery/models/accessory.dart';
@@ -16,6 +18,13 @@ import 'package:gas_delivery/utils/shared_pref.dart';
 import 'package:http/http.dart' as http;
 
 class DashboardPage extends StatefulWidget {
+  final FlutterCart flutterCart;
+  final Function(int) refreshFunction;
+
+  const DashboardPage(
+      {Key? key, required this.flutterCart, required this.refreshFunction})
+      : super(key: key);
+
   @override
   _DashboardPageState createState() => _DashboardPageState();
 }
@@ -53,38 +62,31 @@ class _DashboardPageState extends State<DashboardPage> {
       return map;
     }
 
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
         height: size.height,
-        color: Colors.grey[200],
+        color: Colors.white,
         child: SingleChildScrollView(
           padding: EdgeInsets.only(bottom: 30),
           child: Column(
             children: [
-
               Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 12),
-                child: Text("Gas Accessories", style: Theme.of(context).textTheme.subtitle1!.copyWith(decoration: TextDecoration.underline, fontWeight: FontWeight.w600, color: primaryColorDark),),
+                child: Text(
+                  "Gas Accessories",
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w600,
+                      color: primaryColorDark),
+                ),
               ),
-
               FutureBuilder(
-                future: fetchAccessories(),
+                  future: fetchAccessories(),
                   builder: (context, snapshot) {
-                    // if (snapshot.connectionState == ConnectionState.waiting) {
-                    //   return Center(
-                    //     child: Container(
-                    //       padding: EdgeInsets.symmetric(vertical: 20),
-                    //       child: CircularProgressIndicator(),
-                    //     ),
-                    //   );
-                    // } else
-                      if (snapshot.hasData) {
-
+                    if (snapshot.hasData) {
                       Map<String, dynamic> mapp =
-                      (snapshot.data as Map<String, dynamic>);
+                          (snapshot.data as Map<String, dynamic>);
                       var success = mapp['success'];
                       if (!success) {
                         return EmptyPage(
@@ -109,23 +111,14 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             Text(
                               "Oops! No accessory found",
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .caption,
+                              style: Theme.of(context).textTheme.caption,
                             )
                           ],
                         );
                       }
-
                       int accessoriesCount = accessories.length;
-
-                      int columnCount = 3;
-                      if(accessoriesCount > (columnCount * 2)){
-                        accessoriesCount = (columnCount * 2);
-                      }
                       return Container(
-                        height: 220,
+                        height: 230,
                         child: Column(
                           children: [
                             Container(
@@ -136,47 +129,57 @@ class _DashboardPageState extends State<DashboardPage> {
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (BuildContext context, int index) {
                                   return AccessoryHolder(
-                                    accessory: Accessory.fromJson(accessories[index]),
+                                    accessory: Accessory.fromJson(
+                                      accessories[index],
+                                    ),
+                                    flutterCart: widget.flutterCart,
+                                    notifyParent: widget.refreshFunction,
                                   );
                                 },
                               ),
-                            ), 
+                            ),
                           ],
                         ),
                       );
                     } else if (snapshot.hasError) {
-                      return EmptyPage(icon: Icons.error_outline,
-                          message: "${snapshot.error}", height: 120.0,);
+                      return EmptyPage(
+                        icon: Icons.error_outline,
+                        message: "${snapshot.error}",
+                        height: 120.0,
+                      );
                     } else {
-                      return EmptyPage(icon: Icons.error_outline,
-                          message: "Something went wrong", height: 120.0,);
+                      return Container(
+                        height: 200,
+                        child: Center(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      );
                     }
-                  }
-              ),
+                  }),
+              Divider(),
               ListView(
                 padding: EdgeInsets.only(bottom: 10),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 children:
-                selectOptionsList.map(buildOptionSelectionList).toList(),
+                    selectOptionsList.map(buildOptionSelectionList).toList(),
               ),
               SizedBox(
                 height: 12,
               ),
               Text(
                 "Ongoing Orders",
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline5!
-                    .apply(
+                style: Theme.of(context).textTheme.headline5!.apply(
                     fontSizeFactor: 0.8, decoration: TextDecoration.underline),
               ),
               FutureBuilder(
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     Map<String, dynamic> mapp =
-                    (snapshot.data as Map<String, dynamic>);
+                        (snapshot.data as Map<String, dynamic>);
                     var success = mapp['success'];
                     if (!success) {
                       return EmptyPage(
@@ -201,10 +204,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                           Text(
                             "Oops! No ongoing orders found",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .caption,
+                            style: Theme.of(context).textTheme.caption,
                           )
                         ],
                       );
@@ -216,7 +216,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         itemBuilder: (context, index) {
                           return OngoingOrderHolder(
                             ongoingOrder:
-                            OngoingOrder.fromJson(incidents[index]),
+                                OngoingOrder.fromJson(incidents[index]),
                           );
                         });
                   } else if (snapshot.hasError) {
@@ -227,10 +227,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     );
                   } else {
                     return Container(
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height * 0.3,
+                        height: MediaQuery.of(context).size.height * 0.3,
                         child: Center(child: CircularProgressIndicator()));
                   }
                 },
@@ -267,18 +264,15 @@ class _DashboardPageState extends State<DashboardPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(selectOption.title,
-                            style: Theme
-                                .of(context)
+                            style: Theme.of(context)
                                 .textTheme
-                                .subtitle2),
+                                .subtitle2!
+                                .copyWith(color: primaryColorDark)),
                         SizedBox(
                           height: 8,
                         ),
                         Text(selectOption.description,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyText2),
+                            style: Theme.of(context).textTheme.bodyText2),
                         SizedBox(
                           height: 8,
                         ),
@@ -289,31 +283,32 @@ class _DashboardPageState extends State<DashboardPage> {
                                 navigateToPage(
                                     context,
                                     NewPurchasePage(
-                                      url: "api/gas",
-                                      title: "Refilling",
-                                    ));
+                                        url: "api/gas",
+                                        title: "Refilling",
+                                        flutterCart: widget.flutterCart,
+                                        notifyParent: widget.refreshFunction));
                                 break;
                               case SELECT_OPTIONS_ITEMS.NEW_PURCHASE:
                                 navigateToPage(
                                     context,
                                     NewPurchasePage(
-                                      url: "api/gas/0",
-                                      title: "New Purchase",
-                                    ));
+                                        url: "api/gas/0",
+                                        title: "New Purchase",
+                                        flutterCart: widget.flutterCart,
+                                        notifyParent: widget.refreshFunction));
                                 break;
                             }
                           },
                           child: Text(
                             selectOption.buttonText,
-                            style: Theme
-                                .of(context)
+                            style: Theme.of(context)
                                 .textTheme
                                 .caption!
                                 .apply(color: Colors.white),
                           ),
                           style: ButtonStyle(
                               backgroundColor:
-                              MaterialStateProperty.all(primaryColor)),
+                                  MaterialStateProperty.all(primaryColorLight)),
                         ),
                       ],
                     ),

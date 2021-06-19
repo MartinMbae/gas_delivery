@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_cart/model/cart_model.dart';
 import 'package:gas_delivery/models/GasItem.dart';
+import 'package:gas_delivery/models/accessory.dart';
 import 'package:gas_delivery/models/address.dart';
 import 'package:gas_delivery/pages/crbPay.dart';
 import 'package:gas_delivery/utils/colors.dart';
@@ -34,8 +36,6 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     _progressDialog = ArsProgressDialog(
       context,
       blur: 2,
@@ -65,103 +65,207 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                       shrinkWrap: true,
                       itemCount: widget.flutterCart.getCartItemCount(),
                       itemBuilder: (context, index) {
-                        GasItem gasItem = widget.flutterCart.cartItem[index]
+                        dynamic cartItem = widget.flutterCart.cartItem[index]
                             .productDetails;
-                        return Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 60,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Image.asset("assets/logo.jpeg", width: 60,
-                                        height: 60,),
-                                      Text(gasItem.company_name, style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .caption,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,),
-                                    ],
-                                  ),
-                                ),
 
-                                SizedBox(width: 8,),
-                                Flexible(
-                                  child: Container(
+                        if (cartItem is GasItem) {
+                          GasItem gasItem = cartItem;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 60,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .start,
                                       crossAxisAlignment: CrossAxisAlignment
-                                          .start,
+                                          .end,
                                       children: [
-                                        Hero(
-                                            tag: 'description${gasItem.id}',
-                                            child: Text(
-                                                "${gasItem.weight} KG ${gasItem
-                                                    .classification}",
-                                                style: Theme
-                                                    .of(context)
-                                                    .textTheme
-                                                    .subtitle1!
-                                                    .apply(
-                                                    fontSizeFactor: 0.9))),
-                                        SizedBox(height: 8,),
+                                        Image.asset(
+                                          "assets/logo.jpeg", width: 60,
+                                          height: 60,),
+                                        Text(gasItem.company_name, style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .caption,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,),
                                       ],
                                     ),
                                   ),
-                                ),
-                                SizedBox(width: 8,),
-                              ],
-                            ),
-                            SizedBox(height: 20,),
-                            RichText(text: TextSpan(children: [
-                              TextSpan(text: "Price per Unit : "),
 
-                              if(gasItem.initialPrice != null)
-                                TextSpan(text: "Ksh ${gasItem.initialPrice}  ",
-                                    style: Theme
-                                        .of(context)
-                                        .textTheme
-                                        .caption!
-                                        .apply(
-                                        decoration: TextDecoration.lineThrough,
-                                        color: Colors.redAccent,
-                                        fontSizeFactor: 0.9)),
-                              TextSpan(text: "Ksh ${gasItem.price}"),
-                            ],
-                                style: TextStyle(color: Colors.black)
-                            )),
-                            SizedBox(height: 8,),
-                            Row(
-                              children: [
-                                Text("Number of items  "),
-                                Text("${widget.flutterCart.cartItem[index]
-                                    .quantity}", style: Theme
+                                  SizedBox(width: 8,),
+                                  Flexible(
+                                    child: Container(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .start,
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        children: [
+                                          Hero(
+                                              tag: 'description${gasItem.id}',
+                                              child: Text(
+                                                  "${gasItem
+                                                      .weight} KG ${gasItem
+                                                      .classification}",
+                                                  style: Theme
+                                                      .of(context)
+                                                      .textTheme
+                                                      .subtitle1!
+                                                      .apply(
+                                                      fontSizeFactor: 0.9))),
+                                          SizedBox(height: 8,),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8,),
+                                ],
+                              ),
+                              SizedBox(height: 20,),
+                              RichText(text: TextSpan(children: [
+                                TextSpan(text: "Price per Unit : "),
+
+                                if(gasItem.initialPrice != null)
+                                  TextSpan(
+                                      text: "Ksh ${gasItem.initialPrice}  ",
+                                      style: Theme
+                                          .of(context)
+                                          .textTheme
+                                          .caption!
+                                          .apply(
+                                          decoration: TextDecoration
+                                              .lineThrough,
+                                          color: Colors.redAccent,
+                                          fontSizeFactor: 0.9)),
+                                TextSpan(text: "Ksh ${gasItem.price}"),
+                              ],
+                                  style: TextStyle(color: Colors.black)
+                              )),
+                              SizedBox(height: 8,),
+                              Row(
+                                children: [
+                                  Text("Number of items  "),
+                                  Text("${widget.flutterCart.cartItem[index]
+                                      .quantity}", style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .subtitle1!
+                                      .apply(color: Colors.green)),
+                                ],
+                              ),
+                              SizedBox(height: 8,),
+                              RichText(text: TextSpan(children: [
+                                TextSpan(text: "Total Price: "),
+                                TextSpan(text: "Ksh ${int.parse(gasItem.price) *
+                                    widget.flutterCart.cartItem[index]
+                                        .quantity }", style: Theme
                                     .of(context)
                                     .textTheme
                                     .subtitle1!
                                     .apply(color: Colors.green)),
                               ],
-                            ),
-                            SizedBox(height: 8,),
-                            RichText(text: TextSpan(children: [
-                              TextSpan(text: "Total Price: "),
-                              TextSpan(text: "Ksh ${int.parse(gasItem.price) *
-                                  widget.flutterCart.cartItem[index]
-                                      .quantity }", style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .subtitle1!
-                                  .apply(color: Colors.green)),
+                                  style: TextStyle(color: Colors.black)
+                              )),
+                              SizedBox(height: 20,),
                             ],
-                                style: TextStyle(color: Colors.black)
-                            )),
-                            SizedBox(height: 20,),
-                          ],
-                        );
+                          );
+                        } else {
+                          Accessory accessory = cartItem;
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 60,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .end,
+                                      children: [
+                                        Image.network(accessory.url, width: 60,
+                                          height: 60,),
+                                      ],
+                                    ),
+                                  ),
+
+                                  SizedBox(width: 8,),
+                                  Flexible(
+                                    child: Container(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .start,
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        children: [
+                                          Text(
+                                              "${accessory.title}",
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .subtitle1!
+                                                  .apply(
+                                                  fontSizeFactor: 0.9)),
+                                          SizedBox(height: 8,),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8,),
+                                ],
+                              ),
+                              SizedBox(height: 20,),
+                              RichText(text: TextSpan(children: [
+                                TextSpan(text: "Price per Unit : "),
+
+                                if(accessory.initialPrice != null)
+                                  TextSpan(
+                                      text: "Ksh ${accessory.initialPrice}  ",
+                                      style: Theme
+                                          .of(context)
+                                          .textTheme
+                                          .caption!
+                                          .apply(
+                                          decoration: TextDecoration
+                                              .lineThrough,
+                                          color: Colors.redAccent,
+                                          fontSizeFactor: 0.9)),
+                                TextSpan(text: "Ksh ${accessory.price}"),
+                              ],
+                                  style: TextStyle(color: Colors.black)
+                              )),
+                              SizedBox(height: 8,),
+                              Row(
+                                children: [
+                                  Text("Number of items  "),
+                                  Text("${widget.flutterCart.cartItem[index]
+                                      .quantity}", style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .subtitle1!
+                                      .apply(color: Colors.green)),
+                                ],
+                              ),
+                              SizedBox(height: 8,),
+                              RichText(text: TextSpan(children: [
+                                TextSpan(text: "Total Price: "),
+                                TextSpan(
+                                    text: "Ksh ${int.parse(accessory.price) *
+                                        widget.flutterCart.cartItem[index]
+                                            .quantity }", style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .apply(color: Colors.green)),
+                              ],
+                                  style: TextStyle(color: Colors.black)
+                              )),
+                              SizedBox(height: 20,),
+                            ],
+                          );
+                        }
                       },
                       separatorBuilder: (context, index) {
                         return Divider();
@@ -298,8 +402,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                       children: [
                         OutlinedButton.icon(onPressed: () async {
                           var user_id = await getUserId();
-                          submitNewOrder(
-                              9, 7, widget.userAddress.id, 7, user_id!);
+                          submitNewOrder(widget.userAddress.id, user_id!);
                         }, icon: Icon(Icons.check), label: Text(
                             "Submit Order")),
                       ],
@@ -314,10 +417,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
     );
   }
 
-  Future<void> submitNewOrder(int total_price,
-      int count,
-      int address_id,
-      int gas_id,
+  Future<void> submitNewOrder(int address_id,
       String user_id,) async {
     _progressDialog.show();
     String url = BASE_URL + 'api/order';
@@ -326,16 +426,26 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
     List<CartItem> cartItems = widget.flutterCart.cartItem;
 
     List<GasItem> gasItemList = [];
+    List<Accessory> accessoryList = [];
 
     for (CartItem cartItem in cartItems) {
-      GasItem gasItem = cartItem.productDetails;
-      gasItem.setCount(cartItem.quantity);
-      gasItemList.add(gasItem);
+      dynamic item = cartItem.productDetails;
+      if (item is GasItem) {
+        GasItem gasItem = cartItem.productDetails;
+        gasItem.setCount(cartItem.quantity);
+        gasItemList.add(gasItem);
+      } else {
+        Accessory accessory = cartItem.productDetails;
+        accessory.setCount(cartItem.quantity);
+        accessoryList.add(accessory);
+      }
     }
+
 
     Map<String, dynamic> requestData = {
       'user_id': "$user_id",
-      'cartItems': "${jsonEncode(gasItemList)}",
+      'gasItems': "${jsonEncode(gasItemList)}",
+      'accessoryItems': "${jsonEncode(accessoryList)}",
       'address_id': "$address_id",
     };
 
@@ -348,7 +458,9 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
     };
 
     try {
-      response = await http.post(Uri.parse(url), body: jsonEncode(requestData),  headers: headers).timeout(
+      response = await http.post(
+          Uri.parse(url), body: jsonEncode(requestData), headers: headers)
+          .timeout(
           Duration(seconds: 20));
     } on Exception {
       response = null;

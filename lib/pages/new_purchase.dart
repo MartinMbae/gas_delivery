@@ -17,13 +17,17 @@ class NewPurchasePage extends StatefulWidget {
   final String title;
   final String url;
 
-  const NewPurchasePage({Key? key, required this.title, required this.url}) : super(key: key);
+
+  final void Function(int) notifyParent;
+
+  final FlutterCart flutterCart;
+
+  const NewPurchasePage({Key? key, required this.title, required this.url, required this.flutterCart, required this.notifyParent}) : super(key: key);
   @override
   _NewPurchasePageState createState() => _NewPurchasePageState();
 }
 
 class _NewPurchasePageState extends State<NewPurchasePage> {
-
 
   Future<Map<String, dynamic>> fetchNewPurchases() async {
     var url = "$BASE_URL${widget.url}";
@@ -42,15 +46,15 @@ class _NewPurchasePageState extends State<NewPurchasePage> {
     setState(() {
       cartCount = newCartCount;
     });
+
+    widget.notifyParent(newCartCount);
   }
 
 
   @override
   Widget build(BuildContext context) {
 
-
-    var cart = FlutterCart();
-     cartCount = cart.getCartItemCount();
+     cartCount = widget.flutterCart.getCartItemCount();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -63,7 +67,7 @@ class _NewPurchasePageState extends State<NewPurchasePage> {
                 navigateToPage(
                     context,
                     CheckOutPage(
-                      flutterCart: cart,
+                      flutterCart: widget.flutterCart,
                     ));
               }
             },
@@ -83,21 +87,23 @@ class _NewPurchasePageState extends State<NewPurchasePage> {
           future: fetchNewPurchases(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-
               Map<String, dynamic> mapp = (snapshot.data as Map<String, dynamic>);
               var success = mapp['success'];
               if (!success){
-                return EmptyPage(icon: Icons.error, message: "No orders found",height: 200.0,);
+                return EmptyPage(icon: Icons.error, message: "No items found",height: 200.0,);
               }
               List<dynamic> incidents = mapp['gasses'];
               bool hasData = incidents.length > 0;
+              if (!hasData){
+                return EmptyPage(icon: Icons.error, message: "No items found",height: 200.0,);
+              }
               return ListView.builder(
                   itemCount: incidents.length,
                   itemBuilder: (context, index) {
                     return hasData
                         ? GasItemHolder(
                       gasItem: GasItem.fromJson(incidents[index]),
-                      flutterCart: cart,
+                      flutterCart: widget.flutterCart,
                         notifyParent: refresh
                     )
                         : EmptyPage(

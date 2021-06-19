@@ -1,7 +1,12 @@
 import 'package:flutter/foundation.dart';
 
 class Accessory {
+
   final id,title,description,url, initialPrice,price ;
+
+
+  int count = 1;
+
   Accessory({
     @required this.id,
     @required this.title,
@@ -21,4 +26,22 @@ class Accessory {
       price: json['price'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id' : id,
+      'title' : title,
+      'description' : description,
+      'url' : url,
+      'initialPrice' : initialPrice,
+      'price' : price,
+      'count' : count,
+    };
+  }
+
+
+  void setCount(int newCount){
+    count = newCount;
+  }
+
 }

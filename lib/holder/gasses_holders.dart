@@ -6,9 +6,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:gas_delivery/models/GasItem.dart';
-import 'package:gas_delivery/pages/checkout_screen.dart';
 import 'package:gas_delivery/utils/colors.dart';
-import 'package:gas_delivery/utils/custom_methods.dart';
 
 class GasItemHolder extends StatefulWidget {
   final GasItem gasItem;
@@ -53,9 +51,8 @@ class _GasItemHolderState extends State<GasItemHolder> {
   removeItemFromCart(int index) {
         widget.flutterCart.decrementItemFromCart(index);
         widget.notifyParent(widget.flutterCart.getCartItemCount());
-        int newId = widget.flutterCart.findItemIndexFromCart(widget.gasItem.id);
         setState(() {
-          gasIsInCat = newId;
+          gasIsInCat = -1;
         });
   }
 
@@ -70,9 +67,6 @@ class _GasItemHolderState extends State<GasItemHolder> {
 
   @override
   Widget build(BuildContext context) {
-    gasIsInCat = widget.flutterCart.findItemIndexFromCart(widget.gasItem.id);
-    print("hhhh $gasIsInCat");
-
     progressDialog = ArsProgressDialog(context,
         blur: 2,
         backgroundColor: Color(0x33000000),
@@ -191,7 +185,7 @@ class _GasItemHolderState extends State<GasItemHolder> {
                     child: Center(
                       child: GestureDetector(
                         onTap: () {
-                          if(gasIsInCat == null){
+                          if(gasIsInCat == -1){
                             addToCart(widget.gasItem);
                           }else{
                             removeItemFromCart(gasIsInCat);
@@ -199,12 +193,23 @@ class _GasItemHolderState extends State<GasItemHolder> {
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 12.0),
-                          child: Text(
-                            gasIsInCat == null
-                                ? "Add to Cart".toUpperCase()
-                                : "Remove from Cart".toUpperCase(),
-                            style: Theme.of(context).textTheme.subtitle1!.apply(
-                                color: gasIsInCat == null ? primaryColorLight : Colors.red , fontSizeFactor: 0.7),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(gasIsInCat == -1 ? CupertinoIcons.cart_badge_plus : CupertinoIcons.cart_badge_minus, color: gasIsInCat == -1 ? primaryColorLight : Colors.red,),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                gasIsInCat == -1
+                                    ? 'Add to Cart'
+                                    : "Remove from Cart",
+                                style: TextStyle(
+                                  color: gasIsInCat == -1 ? primaryColorLight : Colors.red,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
