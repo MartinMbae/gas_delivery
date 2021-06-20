@@ -17,9 +17,9 @@ import 'package:http/http.dart' as http;
 class PayPage extends StatefulWidget {
 
   final FlutterCart flutterCart;
-  final order_id;
+  final cumulative_id;
 
-  const PayPage({Key? key, required this.flutterCart, required this.order_id})
+  const PayPage({Key? key, required this.flutterCart, required this.cumulative_id})
       : super(key: key);
 
   @override
@@ -198,7 +198,7 @@ class _PayPageState extends State<PayPage> {
                               var user_id = await getUserId();
                               var phone = phoneController.text;
                               startPay(
-                                  widget.order_id,
+                                  widget.cumulative_id,
                                   user_id!,
                                   phone);
                             },
@@ -218,7 +218,7 @@ class _PayPageState extends State<PayPage> {
 
   Future<void> startPay(
 
-    dynamic order_id,
+    dynamic cumulative_id,
     String user_id,
     String phone,
   ) async {
@@ -231,12 +231,11 @@ class _PayPageState extends State<PayPage> {
       return;
     }
 
-
     _progressDialog.show();
     String url = BASE_URL + 'api/pay';
     Map<String, String> map = {
       'user_id': "$user_id",
-      'order_id': order_id.toString(),
+      'cumulative_id': cumulative_id.toString(),
       'phone': "$phone",
     };
     print(map);

@@ -508,9 +508,9 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
     Map<String, dynamic> responseAsJson = jsonDecode(response.body);
     if (responseAsJson['success'] == true) {
       widget.flutterCart.deleteAllCart();
-      var orderID = responseAsJson['order_id'];
+      var cumulativeId = responseAsJson['cumulative_id'];
       navigateToPageRemoveHistory(context,
-          PayPage(flutterCart: widget.flutterCart, order_id: orderID,));
+          PayPage(flutterCart: widget.flutterCart, cumulative_id: cumulativeId,));
       SuccessAlertBox(
           context: context,
           title: "Success",

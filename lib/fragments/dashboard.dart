@@ -30,6 +30,17 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+
+
+  retryFetchingAccessories(){
+    setState(() {
+    });
+
+    retryPressed = true;
+  }
+
+  bool retryPressed = false;
+
   @override
   Widget build(BuildContext context) {
     Future<Map<String, dynamic>> fetchOngoingOrders() async {
@@ -62,6 +73,8 @@ class _DashboardPageState extends State<DashboardPage> {
       return map;
     }
 
+
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
@@ -84,7 +97,19 @@ class _DashboardPageState extends State<DashboardPage> {
               FutureBuilder(
                   future: fetchAccessories(),
                   builder: (context, snapshot) {
+                    if(snapshot.connectionState == ConnectionState.waiting && retryPressed){
+                      return Container(
+                        height: 200,
+                        child: Center(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      );
+                    }
                     if (snapshot.hasData) {
+                      retryPressed = false;
                       Map<String, dynamic> mapp =
                           (snapshot.data as Map<String, dynamic>);
                       var success = mapp['success'];
@@ -144,8 +169,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     } else if (snapshot.hasError) {
                       return EmptyPage(
                         icon: Icons.error_outline,
+                        retry: retryFetchingAccessories,
                         message: "${snapshot.error}",
-                        height: 120.0,
+                        height: 150.0,
                       );
                     } else {
                       return Container(
