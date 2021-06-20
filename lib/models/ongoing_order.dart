@@ -1,21 +1,19 @@
 import 'package:flutter/foundation.dart';
+import 'package:gas_delivery/models/accessory.dart';
 
 class OngoingOrder {
-  final id,address,house_number,apartment_estate,landmark,total_price,classification,weight, initialPrice,price,company_name, created_at_parsed, status ;
+  final id,address,house_number,apartment_estate,landmark,
+      created_at_parsed, status , gasItemsOrders,accessoryItemsOrders ;
   OngoingOrder({
     @required this.id,
     @required this.address,
     @required this.house_number,
     @required this.apartment_estate,
     @required this.landmark,
-    @required this.total_price,
-    @required this.classification,
-    @required this.weight,
-    @required this.initialPrice,
-    @required this.price,
-    @required this.company_name,
     @required this.created_at_parsed,
     @required this.status,
+    @required this.gasItemsOrders,
+    @required this.accessoryItemsOrders,
   });
 
   static OngoingOrder fromJson(dynamic json) {
@@ -25,14 +23,19 @@ class OngoingOrder {
       house_number: json['house_number'],
       apartment_estate: json['apartment_estate'],
       landmark: json['landmark'],
-      total_price: json['total_price'],
-      classification: json['classification'],
-      weight: json['weight'],
-      initialPrice: json['initialPrice'],
-      price: json['price'],
-      company_name: json['company_name'],
       created_at_parsed: json['created_at_parsed'],
       status: json['status'],
+      gasItemsOrders: json['gasItemsOrders'],
+      accessoryItemsOrders: json['accessoryItemsOrders'],
     );
+  }
+
+  List<dynamic> getOrderedAccessories(){
+    List<dynamic> accessories = accessoryItemsOrders;
+    return accessories;
+  }
+  List<dynamic> getOrderedGasItems(){
+    List<dynamic> gasItems = gasItemsOrders;
+    return gasItems;
   }
 }

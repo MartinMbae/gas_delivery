@@ -163,6 +163,7 @@ class _AccessoryHolderState extends State<AccessoryHolder> {
         ),
       ),
       shape: RoundedRectangleBorder(
+        side: BorderSide(color: Colors.grey.shade400, width: 1),
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 0,

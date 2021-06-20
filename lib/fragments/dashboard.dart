@@ -79,7 +79,7 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       body: Container(
         height: size.height,
-        color: Colors.white,
+        color: Colors.grey[200],
         child: SingleChildScrollView(
           padding: EdgeInsets.only(bottom: 30),
           child: Column(
@@ -94,97 +94,99 @@ class _DashboardPageState extends State<DashboardPage> {
                       color: primaryColorDark),
                 ),
               ),
-              FutureBuilder(
-                  future: fetchAccessories(),
-                  builder: (context, snapshot) {
-                    if(snapshot.connectionState == ConnectionState.waiting && retryPressed){
-                      return Container(
-                        height: 200,
-                        child: Center(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            child: CircularProgressIndicator(),
+              Container(
+                child: FutureBuilder(
+                    future: fetchAccessories(),
+                    builder: (context, snapshot) {
+                      if(snapshot.connectionState == ConnectionState.waiting && retryPressed){
+                        return Container(
+                          height: 200,
+                          child: Center(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              child: CircularProgressIndicator(),
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                    if (snapshot.hasData) {
-                      retryPressed = false;
-                      Map<String, dynamic> mapp =
-                          (snapshot.data as Map<String, dynamic>);
-                      var success = mapp['success'];
-                      if (!success) {
-                        return EmptyPage(
-                          icon: Icons.error,
-                          message: "No accessories found",
-                          height: 200.0,
                         );
                       }
-                      List<dynamic> accessories = mapp['accessories'];
-                      bool hasData = accessories.length > 0;
+                      if (snapshot.hasData) {
+                        retryPressed = false;
+                        Map<String, dynamic> mapp =
+                            (snapshot.data as Map<String, dynamic>);
+                        var success = mapp['success'];
+                        if (!success) {
+                          return EmptyPage(
+                            icon: Icons.error,
+                            message: "No accessories found",
+                            height: 200.0,
+                          );
+                        }
+                        List<dynamic> accessories = mapp['accessories'];
+                        bool hasData = accessories.length > 0;
 
-                      if (!hasData) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: 40,
+                        if (!hasData) {
+                          return Column(
+                            children: [
+                              SizedBox(
+                                height: 40,
+                              ),
+                              Image.asset(
+                                'assets/not_found.png',
+                                height: 80,
+                                width: 80,
+                              ),
+                              Text(
+                                "Oops! No accessory found",
+                                style: Theme.of(context).textTheme.caption,
+                              )
+                            ],
+                          );
+                        }
+                        int accessoriesCount = accessories.length;
+                        return Container(
+                          height: 200,
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 200,
+                                child: ListView.builder(
+                                  itemCount: accessoriesCount,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return AccessoryHolder(
+                                      accessory: Accessory.fromJson(
+                                        accessories[index],
+                                      ),
+                                      flutterCart: widget.flutterCart,
+                                      notifyParent: widget.refreshFunction,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return EmptyPage(
+                          icon: Icons.error_outline,
+                          retry: retryFetchingAccessories,
+                          message: "${snapshot.error}",
+                          height: 150.0,
+                        );
+                      } else {
+                        return Container(
+                          height: 200,
+                          child: Center(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              child: CircularProgressIndicator(),
                             ),
-                            Image.asset(
-                              'assets/not_found.png',
-                              height: 80,
-                              width: 80,
-                            ),
-                            Text(
-                              "Oops! No accessory found",
-                              style: Theme.of(context).textTheme.caption,
-                            )
-                          ],
+                          ),
                         );
                       }
-                      int accessoriesCount = accessories.length;
-                      return Container(
-                        height: 230,
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 200,
-                              child: ListView.builder(
-                                itemCount: accessoriesCount,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return AccessoryHolder(
-                                    accessory: Accessory.fromJson(
-                                      accessories[index],
-                                    ),
-                                    flutterCart: widget.flutterCart,
-                                    notifyParent: widget.refreshFunction,
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      return EmptyPage(
-                        icon: Icons.error_outline,
-                        retry: retryFetchingAccessories,
-                        message: "${snapshot.error}",
-                        height: 150.0,
-                      );
-                    } else {
-                      return Container(
-                        height: 200,
-                        child: Center(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                      );
-                    }
-                  }),
+                    }),
+              ),
               Divider(),
               ListView(
                 padding: EdgeInsets.only(bottom: 10),
@@ -194,12 +196,12 @@ class _DashboardPageState extends State<DashboardPage> {
                     selectOptionsList.map(buildOptionSelectionList).toList(),
               ),
               SizedBox(
-                height: 12,
+                height: 24,
               ),
               Text(
-                "Ongoing Orders",
+                "Ongoing Orders".toUpperCase(),
                 style: Theme.of(context).textTheme.headline5!.apply(
-                    fontSizeFactor: 0.8, decoration: TextDecoration.underline),
+                    fontSizeFactor: 0.8, decoration: TextDecoration.underline, color: primaryColorDark),
               ),
               FutureBuilder(
                 builder: (context, snapshot) {
@@ -268,11 +270,13 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Widget buildOptionSelectionList(SelectOption selectOption) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8),
       color: Colors.white,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4),
         child: Column(
           children: [
+            SizedBox(height: 8,),
             Row(
               children: [
                 Image.asset(
@@ -302,39 +306,42 @@ class _DashboardPageState extends State<DashboardPage> {
                         SizedBox(
                           height: 8,
                         ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            switch (selectOption.select_options_items) {
-                              case SELECT_OPTIONS_ITEMS.REFILL:
-                                navigateToPage(
-                                    context,
-                                    NewPurchasePage(
-                                        url: "api/gas",
-                                        title: "Refilling",
-                                        flutterCart: widget.flutterCart,
-                                        notifyParent: widget.refreshFunction));
-                                break;
-                              case SELECT_OPTIONS_ITEMS.NEW_PURCHASE:
-                                navigateToPage(
-                                    context,
-                                    NewPurchasePage(
-                                        url: "api/gas/0",
-                                        title: "New Purchase",
-                                        flutterCart: widget.flutterCart,
-                                        notifyParent: widget.refreshFunction));
-                                break;
-                            }
-                          },
-                          child: Text(
-                            selectOption.buttonText,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .apply(color: Colors.white),
+                        Container(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              switch (selectOption.select_options_items) {
+                                case SELECT_OPTIONS_ITEMS.REFILL:
+                                  navigateToPage(
+                                      context,
+                                      NewPurchasePage(
+                                          url: "api/gas",
+                                          title: "Refilling",
+                                          flutterCart: widget.flutterCart,
+                                          notifyParent: widget.refreshFunction));
+                                  break;
+                                case SELECT_OPTIONS_ITEMS.NEW_PURCHASE:
+                                  navigateToPage(
+                                      context,
+                                      NewPurchasePage(
+                                          url: "api/gas/0",
+                                          title: "New Purchase",
+                                          flutterCart: widget.flutterCart,
+                                          notifyParent: widget.refreshFunction));
+                                  break;
+                              }
+                            },
+                            child: Text(
+                              selectOption.buttonText,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption!
+                                  .apply(color: Colors.white),
+                            ),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(primaryColorLight)),
                           ),
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(primaryColorLight)),
                         ),
                       ],
                     ),
