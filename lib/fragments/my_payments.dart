@@ -60,7 +60,7 @@ class _PaymentsFragmentState extends State<PaymentsFragment> {
                       );
                     });
               } else if(snapshot.hasError){
-                return Text(snapshot.error.toString());
+                return Text("Something went wrong. Please check your internet and try again");
               }else {
                 return Center(child: Container(child: CircularProgressIndicator()));
               }

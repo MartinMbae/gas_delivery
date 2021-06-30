@@ -167,11 +167,12 @@ class _DashboardPageState extends State<DashboardPage> {
                             ],
                           ),
                         );
-                      } else if (snapshot.hasError) {
+                      }
+                      else if (snapshot.hasError) {
                         return EmptyPage(
                           icon: Icons.error_outline,
                           retry: retryFetchingAccessories,
-                          message: "${snapshot.error}",
+                          message: "Something went wrong. Please check your internet and try again",
                           height: 150.0,
                         );
                       } else {
@@ -250,7 +251,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   } else if (snapshot.hasError) {
                     return EmptyPage(
                       icon: Icons.error,
-                      message: snapshot.error.toString(),
+                      message: "Something went wrong. Please check your internet and try again",
                       height: 200.0,
                     );
                   } else {

@@ -111,7 +111,7 @@ class _NewPurchasePageState extends State<NewPurchasePage> {
                   });
 
             } else if(snapshot.hasError){
-              return EmptyPage(icon: Icons.error, message: snapshot.error.toString(),height: 200.0,);
+              return EmptyPage(icon: Icons.error, message: "Something went wrong. Please check your internet and try again",height: 200.0,);
             }else {
               return Center(child: CircularProgressIndicator());
             }
