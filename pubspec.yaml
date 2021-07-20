@@ -41,6 +41,10 @@ dependencies:
   cached_network_image: ^2.5.0
   flutter_cart: ^0.0.5+1
   badges: ^2.0.1
+  change_app_package_name: ^1.0.0
+
+
+  #flutter pub run change_app_package_name:main com.new.package.name
 
 
 dev_dependencies:
