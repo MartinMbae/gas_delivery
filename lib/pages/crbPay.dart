@@ -192,7 +192,7 @@ class _PayPageState extends State<PayPage> {
                               navigateToPageRemoveHistory(context, HomePage());
                             },
                             icon: Icon(Icons.cancel, color: Colors.red,),
-                            label: Text("I'll pay later")),
+                            label: Text("Pay on Delivery")),
                         OutlinedButton.icon(
                             onPressed: () async {
                               var user_id = await getUserId();

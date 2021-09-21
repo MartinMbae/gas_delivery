@@ -87,7 +87,7 @@ class _DashboardPageState extends State<DashboardPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 12),
                 child: Text(
-                  "Gas Accessories",
+                  "Energy Accessories",
                   style: Theme.of(context).textTheme.subtitle1!.copyWith(
                       decoration: TextDecoration.underline,
                       fontWeight: FontWeight.w600,
