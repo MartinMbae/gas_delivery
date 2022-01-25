@@ -56,6 +56,7 @@ class _AccessoryHolderState extends State<AccessoryHolder> {
   Widget build(BuildContext context) {
     String heroTag = "imageHero${widget.accessory.id}";
 
+    print("${widget.accessory.url}");
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Container(

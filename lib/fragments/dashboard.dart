@@ -61,6 +61,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
     Future<Map<String, dynamic>> fetchAccessories() async {
       var url = "${BASE_URL}api/accessories";
+      print(url);
       var response = await http
           .get(Uri.parse(url))
           .timeout(Duration(seconds: 30), onTimeout: () {
